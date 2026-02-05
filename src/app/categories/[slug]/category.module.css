@@ -1,0 +1,162 @@
+.main {
+    min-height: 100vh;
+    background: var(--color-black);
+}
+
+.heroSection {
+    padding: 8rem 2rem 4rem;
+    background: linear-gradient(180deg, var(--color-charcoal) 0%, var(--color-black) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.heroSection::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, var(--category-color, var(--color-crimson)) 0%, transparent 70%);
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.heroContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.categoryIcon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.pageTitle {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    color: var(--color-light-silver);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.pageSubtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--color-platinum);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    opacity: 0.9;
+}
+
+.stats {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    color: var(--color-gold);
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.reviewsSection {
+    padding: 4rem 2rem;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.videosGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.noResults {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--color-platinum);
+}
+
+.noResults p {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.noResultsSubtext {
+    opacity: 0.7;
+    font-size: 1rem;
+}
+
+.errorContainer {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.errorContainer h1 {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    color: var(--color-crimson);
+    margin-bottom: 1rem;
+}
+
+.errorContainer p {
+    color: var(--color-platinum);
+    font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .heroSection {
+        padding: 6rem 1.5rem 3rem;
+    }
+
+    .categoryIcon {
+        font-size: 3rem;
+    }
+
+    .videosGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .reviewsSection {
+        padding: 3rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroSection {
+        padding: 5rem 1rem 2rem;
+    }
+
+    .categoryIcon {
+        font-size: 2.5rem;
+    }
+
+    .stats {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+}
