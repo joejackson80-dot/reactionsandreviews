@@ -186,17 +186,14 @@
 /* Mobile Menu Toggle */
 .menuToggle {
   display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  width: 44px;
-  height: 44px;
   background: transparent;
   border: 2px solid var(--color-dark-gray);
   border-radius: 8px;
   cursor: pointer;
   transition: var(--transition-normal);
-  padding: 10px 8px;
+  padding: 12px;
+  width: 48px;
+  height: 48px;
 }
 
 .menuToggle:hover {
@@ -205,44 +202,34 @@
 
 .menuIcon,
 .menuIconOpen {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+}
+
+.menuIcon span,
+.menuIconOpen span {
+  display: block;
   width: 100%;
   height: 2px;
   background: var(--color-platinum);
   transition: all 0.3s ease;
-  position: relative;
+  transform-origin: center;
 }
 
-.menuIcon::before,
-.menuIcon::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: var(--color-platinum);
-  left: 0;
-  transition: all 0.3s ease;
+/* Open state - X icon */
+.menuIconOpen span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
 }
 
-.menuIcon::before {
-  top: -7px;
+.menuIconOpen span:nth-child(2) {
+  opacity: 0;
 }
 
-.menuIcon::after {
-  top: 7px;
-}
-
-.menuIconOpen {
-  background: transparent;
-}
-
-.menuIconOpen::before {
-  top: 0;
-  transform: rotate(45deg);
-}
-
-.menuIconOpen::after {
-  top: 0;
-  transform: rotate(-45deg);
+.menuIconOpen span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* Mobile Menu */

@@ -59,7 +59,11 @@ export default function Navigation() {
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                     aria-label="Toggle menu"
                 >
-                    <span className={isMenuOpen ? styles.menuIconOpen : styles.menuIcon}></span>
+                    <div className={isMenuOpen ? styles.menuIconOpen : styles.menuIcon}>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </button>
             </div>
 
