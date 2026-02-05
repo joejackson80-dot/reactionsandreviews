@@ -102,9 +102,29 @@ body {
   color: var(--color-platinum);
   line-height: 1.6;
   overflow-x: hidden;
-  background-image: var(--gradient-glow);
-  background-attachment: fixed;
+  background-image:
+    var(--gradient-glow),
+    url('/logo.jpg');
+  background-position: center center, center center;
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, 40%;
+  background-attachment: fixed, fixed;
   min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 5, 0.85);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body>* {
+  position: relative;
+  z-index: 1;
 }
 
 /* ============================================
