@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import styles from './contact.module.css';
@@ -46,6 +47,11 @@ export default function ContactPage() {
                     <p className={styles.pageSubtitle}>
                         Get in touch with the Reactions and Reviews team
                     </p>
+                    <div className={styles.heroCta}>
+                        <Link href="/media-kit" className={styles.mediaKitBtn}>
+                            📊 View Our Media Kit & Pitch Deck
+                        </Link>
+                    </div>
                 </div>
             </section>
 
@@ -89,6 +95,9 @@ export default function ContactPage() {
                                     <div>
                                         <h3>Sponsorships & Tips</h3>
                                         <p>Partner with us or support our content creation.</p>
+                                        <Link href="/media-kit" className={styles.inlineLink}>
+                                            View Media Kit →
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
