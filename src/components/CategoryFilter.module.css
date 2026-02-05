@@ -135,16 +135,39 @@
 /* Responsive */
 @media (max-width: 768px) {
     .filterContainer {
-        padding: 3rem 1rem;
+        padding: 2rem 1rem;
+        /* Enable horizontal scroll container */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
+        scrollbar-width: none;
+        /* Firefox */
+        margin: 0;
+        max-width: 100vw;
+    }
+
+    .filterContainer::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari */
     }
 
     .categoryGrid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        display: flex;
+        flex-wrap: nowrap;
         gap: 1rem;
+        padding-bottom: 0.5rem;
+        /* Space for potential scrollbar interaction if needed, or visual breathing room */
+        width: max-content;
+        /* Ensure it stretches */
     }
 
     .categoryCard {
+        min-width: 140px;
+        /* Fixed width for scroll items */
+        width: 140px;
         padding: 1.5rem 1rem;
+        flex-shrink: 0;
+        /* Prevent shrinking */
     }
 
     .categoryIcon {
