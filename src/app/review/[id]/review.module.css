@@ -1,6 +1,6 @@
 .main {
     min-height: 100vh;
-    background: var(--color-black);
+    background: transparent;
 }
 
 .container {
@@ -12,8 +12,8 @@
 /* Hero Section */
 .reviewHero {
     padding: 8rem 0 3rem;
-    background: linear-gradient(180deg, var(--color-charcoal) 0%, var(--color-black) 100%);
-    border-bottom: 2px solid var(--color-dark-gray);
+    background: linear-gradient(180deg, rgba(18, 18, 18, 0.8) 0%, rgba(5, 5, 5, 0.7) 100%);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
 }
 
 .breadcrumb {
@@ -294,8 +294,8 @@
 /* Related Section */
 .relatedSection {
     padding: 4rem 0;
-    background: var(--color-charcoal);
-    border-top: 2px solid var(--color-dark-gray);
+    background: rgba(18, 18, 18, 0.4);
+    border-top: 2px solid rgba(255, 255, 255, 0.05);
 }
 
 .sectionTitle {
@@ -386,7 +386,7 @@
 }
 
 .commentsWrapper {
-    background: var(--color-black);
+    background: transparent;
     padding-bottom: 4rem;
 }
 

@@ -106,24 +106,38 @@ body {
   color: var(--color-platinum);
   line-height: 1.6;
   overflow-x: hidden;
-  background-image:
-    var(--gradient-glow),
-    url('/logo.jpg');
-  background-position: center center, center center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover, 40%;
-  background-attachment: fixed, fixed;
   min-height: 100vh;
   position: relative;
 }
 
-body::before {
+/* Luxury Watermark Pattern & Glow Overlay */
+body::before,
+body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background: rgba(5, 5, 5, 0.85);
   pointer-events: none;
-  z-index: 0;
+}
+
+/* Layer 1: Brand Glows */
+body::before {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(220, 38, 38, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at center, rgba(18, 18, 18, 0.5) 0%, var(--color-black) 100%);
+  z-index: -2;
+}
+
+/* Layer 2: Repeating Logo Watermark */
+body::after {
+  background-image: url('/logo.jpg');
+  background-repeat: repeat;
+  background-size: 120px;
+  background-position: center;
+  opacity: 0.04;
+  /* Ultra-subtle luxury feel */
+  z-index: -1;
+  filter: grayscale(1) brightness(1.5);
 }
 
 body>* {
@@ -153,6 +167,7 @@ h1 {
   font-size: clamp(2.5rem, 5vw, 4.5rem);
   background: linear-gradient(to right, #fff, #ccc);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: none;
 }

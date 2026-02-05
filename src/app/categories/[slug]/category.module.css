@@ -1,11 +1,11 @@
 .main {
     min-height: 100vh;
-    background: var(--color-black);
+    background: transparent;
 }
 
 .heroSection {
     padding: 8rem 2rem 4rem;
-    background: linear-gradient(180deg, var(--color-charcoal) 0%, var(--color-black) 100%);
+    background: linear-gradient(180deg, rgba(18, 18, 18, 0.8) 0%, rgba(5, 5, 5, 0.7) 100%);
     position: relative;
     overflow: hidden;
 }
