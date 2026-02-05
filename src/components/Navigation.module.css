@@ -187,15 +187,16 @@
 .menuToggle {
   display: none;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   background: transparent;
   border: 2px solid var(--color-dark-gray);
   border-radius: 8px;
   cursor: pointer;
   transition: var(--transition-normal);
+  padding: 10px 8px;
 }
 
 .menuToggle:hover {
@@ -204,32 +205,30 @@
 
 .menuIcon,
 .menuIconOpen {
-  position: relative;
-  width: 24px;
+  width: 100%;
   height: 2px;
   background: var(--color-platinum);
-  transition: var(--transition-normal);
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .menuIcon::before,
-.menuIcon::after,
-.menuIconOpen::before,
-.menuIconOpen::after {
+.menuIcon::after {
   content: '';
   position: absolute;
-  left: 0;
-  width: 24px;
+  width: 100%;
   height: 2px;
   background: var(--color-platinum);
-  transition: var(--transition-normal);
+  left: 0;
+  transition: all 0.3s ease;
 }
 
 .menuIcon::before {
-  top: -8px;
+  top: -7px;
 }
 
 .menuIcon::after {
-  top: 8px;
+  top: 7px;
 }
 
 .menuIconOpen {
