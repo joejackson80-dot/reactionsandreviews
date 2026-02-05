@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import styles from './about.module.css';
@@ -109,9 +110,9 @@ export default function AboutPage() {
                                 strategic product placements that resonate with a global audience.
                             </p>
                             <div className={styles.sponsorCta}>
-                                <a href="/contact" className={styles.mediaKitBtn}>
-                                    📄 Request Our Media Kit & Pitch Deck
-                                </a>
+                                <Link href="/media-kit" className={styles.mediaKitBtn}>
+                                    📄 View Our Media Kit & Pitch Deck
+                                </Link>
                                 <p className={styles.ctaSubtitle}>Current sponsorship slots available for Q3 & Q4 2026</p>
                             </div>
                         </div>
