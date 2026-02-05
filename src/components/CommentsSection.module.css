@@ -71,6 +71,39 @@
     margin-bottom: 1.5rem;
 }
 
+.userInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 1.5rem;
+    color: var(--color-platinum);
+}
+
+.userInfo strong {
+    color: var(--color-gold);
+}
+
+.signOutBtn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--color-crimson);
+    border: 1px solid var(--color-crimson);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.signOutBtn:hover {
+    background: var(--color-crimson);
+    color: white;
+}
+
 .inputGroup {
     margin-bottom: 1rem;
 }

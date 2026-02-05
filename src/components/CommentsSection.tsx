@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { supabase } from '@/lib/supabase';
 import { useReviews, Comment } from '@/context/ReviewContext';
 import AuthModal from './AuthModal';
 import styles from './CommentsSection.module.css';
+import type { User } from '@supabase/supabase-js';
 
 interface CommentsSectionProps {
     reviewId: string;
@@ -17,8 +18,7 @@ export default function CommentsSection({ reviewId }: CommentsSectionProps) {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
-    const [user, setUser] = useState<any>(null);
-    const supabase = createClientComponentClient();
+    const [user, setUser] = useState<User | null>(null);
 
     // Check auth status
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function CommentsSection({ reviewId }: CommentsSectionProps) {
         });
 
         return () => subscription.unsubscribe();
-    }, [supabase.auth]);
+    }, []);
 
     const loadComments = useCallback(async () => {
         const data = await getComments(reviewId);

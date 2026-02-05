@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase';
 import styles from './AuthModal.module.css';
 
 interface AuthModalProps {
@@ -10,12 +10,11 @@ interface AuthModalProps {
     onSuccess: () => void;
 }
 
-export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
+export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    const supabase = createClientComponentClient();
 
     const handleMagicLink = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,8 +34,9 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
             setMessage('Check your email for the magic link!');
             setEmail('');
-        } catch (err: any) {
-            setError(err.message || 'Failed to send magic link');
+        } catch (err) {
+            const error = err as Error;
+            setError(error.message || 'Failed to send magic link');
         } finally {
             setLoading(false);
         }
@@ -50,7 +50,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 <button className={styles.closeBtn} onClick={onClose}>×</button>
 
                 <h2 className={styles.title}>Sign in to Comment</h2>
-                <p className={styles.subtitle}>We'll send you a magic link to sign in instantly</p>
+                <p className={styles.subtitle}>We&apos;ll send you a magic link to sign in instantly</p>
 
                 <form onSubmit={handleMagicLink} className={styles.form}>
                     <input
@@ -76,7 +76,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 {error && <p className={styles.error}>{error}</p>}
 
                 <p className={styles.privacy}>
-                    We'll never share your email. No spam, ever.
+                    We&apos;ll never share your email. No spam, ever.
                 </p>
             </div>
         </div>
