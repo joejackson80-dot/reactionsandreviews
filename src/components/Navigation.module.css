@@ -217,6 +217,7 @@
 .menuIconOpen::after {
   content: '';
   position: absolute;
+  left: 0;
   width: 24px;
   height: 2px;
   background: var(--color-platinum);
