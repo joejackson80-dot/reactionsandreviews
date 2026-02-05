@@ -5,47 +5,20 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import VideoCard from '@/components/VideoCard';
 import { useReviews } from '@/context/ReviewContext';
+import { CATEGORY_CONFIG } from '@/lib/constants';
 import styles from './category.module.css';
-
-const CATEGORY_CONFIG: Record<string, { name: string; icon: string; color: string; description: string }> = {
-    movies: {
-        name: 'Movies',
-        icon: '🎥',
-        color: '#DC2626',
-        description: 'In-depth film reviews, reactions, and cinema analysis',
-    },
-    books: {
-        name: 'Books',
-        icon: '📚',
-        color: '#2563EB',
-        description: 'Literary critiques, book summaries, and reading recommendations',
-    },
-    music: {
-        name: 'Music',
-        icon: '🎵',
-        color: '#7C3AED',
-        description: 'Album reviews, track reactions, and sonic breakdowns',
-    },
-    trending: {
-        name: 'Trending Content',
-        icon: '🔥',
-        color: '#F59E0B',
-        description: 'Viral video reactions, hot takes, and internet culture',
-    },
-    products: {
-        name: 'Products',
-        icon: '📦',
-        color: '#10B981',
-        description: 'Tech unboxings, gadget reviews, and consumer advice',
-    },
-};
 
 export default function CategoryPage() {
     const params = useParams();
-    const slug = params.slug as string;
+    const slug = (params.slug as string)?.toLowerCase();
     const { reviews } = useReviews();
 
-    const category = CATEGORY_CONFIG[slug];
+    // Find category by key or name
+    const categoryKey = Object.keys(CATEGORY_CONFIG).find(
+        key => key.toLowerCase() === slug || CATEGORY_CONFIG[key].name.toLowerCase() === slug
+    );
+
+    const category = categoryKey ? CATEGORY_CONFIG[categoryKey] : null;
 
     if (!category) {
         return (
@@ -53,7 +26,7 @@ export default function CategoryPage() {
                 <Navigation />
                 <div className={styles.errorContainer}>
                     <h1>Category Not Found</h1>
-                    <p>The category &quot;{slug}&quot; does not exist.</p>
+                    <p>The category &quot;{params.slug}&quot; does not exist.</p>
                 </div>
                 <Footer />
             </main>

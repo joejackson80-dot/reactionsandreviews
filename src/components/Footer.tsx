@@ -104,7 +104,7 @@ export default function Footer() {
                             <Link href="/categories/movies">Movies</Link>
                             <Link href="/categories/books">Books</Link>
                             <Link href="/categories/music">Music</Link>
-                            <Link href="/categories/trending">Trending</Link>
+                            <Link href="/categories/trending">Trending Content</Link>
                             <Link href="/categories/products">Products</Link>
                         </nav>
                     </div>
