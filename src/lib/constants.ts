@@ -29,4 +29,16 @@ export const CATEGORY_CONFIG: Record<string, { name: string; icon: string; color
         color: '#10B981',
         description: 'Tech unboxings, gadget reviews, and consumer advice',
     },
+    dining: {
+        name: 'Dining & Nightlife',
+        icon: '🍸',
+        color: '#DB2777',
+        description: 'Honest reviews of bars, clubs, restaurants, and local hotspots.',
+    },
+    travel: {
+        name: 'Travel & Leisure',
+        icon: '✈️',
+        color: '#0EA5E9',
+        description: 'Resort tours, hotel stays, and guides to vacations worldwide.',
+    },
 };

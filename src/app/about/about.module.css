@@ -214,3 +214,48 @@
         font-size: 2rem;
     }
 }
+
+/* Sponsorship CTA Styles */
+.sponsorCta {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mediaKitBtn {
+    display: inline-block;
+    padding: 1.25rem 2.5rem;
+    background: var(--gradient-brand);
+    color: white;
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: var(--border-radius);
+    text-align: center;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+    width: fit-content;
+}
+
+.mediaKitBtn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(220, 38, 38, 0.5);
+    filter: brightness(1.1);
+}
+
+.ctaSubtitle {
+    font-size: 0.875rem;
+    color: var(--color-gold);
+    font-weight: 600;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .mediaKitBtn {
+        width: 100%;
+    }
+}

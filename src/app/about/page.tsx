@@ -22,9 +22,9 @@ export default function AboutPage() {
                         <div className={styles.textBlock}>
                             <h2>Our Mission</h2>
                             <p>
-                                At Reactions and Reviews, we&apos;re dedicated to providing honest, in-depth video reviews
-                                across movies, tech, games, music, and products. Our mission is to help you make
-                                informed decisions through authentic reactions and comprehensive analysis.
+                                At Reactions and Reviews, we&apos;re dedicated to providing honest, in-depth reviews
+                                across movies, tech, products, dining, and global travel. Our mission is to help you explore
+                                the best the world has to offer through authentic reactions and comprehensive analysis.
                             </p>
                         </div>
 
@@ -42,7 +42,7 @@ export default function AboutPage() {
                                 <div className={styles.statLabel}>Avg Rating</div>
                             </div>
                             <div className={styles.statCard}>
-                                <div className={styles.statNumber}>5</div>
+                                <div className={styles.statNumber}>7+</div>
                                 <div className={styles.statLabel}>Categories</div>
                             </div>
                         </div>
@@ -82,19 +82,47 @@ export default function AboutPage() {
                                     <span className={styles.featureIcon}>📦</span>
                                     <div>
                                         <h3>Product Testing</h3>
-                                        <p>Honest product reviews and detailed demonstrations</p>
+                                        <p>Honest consumer product reviews and detailed demonstrations</p>
+                                    </div>
+                                </div>
+                                <div className={styles.feature}>
+                                    <span className={styles.featureIcon}>🍸</span>
+                                    <div>
+                                        <h3>Dining & Nightlife</h3>
+                                        <p>Reviews of the world&apos;s best restaurants, bars, and clubs</p>
+                                    </div>
+                                </div>
+                                <div className={styles.feature}>
+                                    <span className={styles.featureIcon}>✈️</span>
+                                    <div>
+                                        <h3>Travel & Leisure</h3>
+                                        <p>Exclusive tours of resorts, hotels, and vacation destinations</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div className={styles.textBlock}>
+                            <h2>Work With Us</h2>
+                            <p>
+                                Are you a brand, resort, or service provider? We offer high-impact sponsored reviews and
+                                strategic product placements that resonate with a global audience.
+                            </p>
+                            <div className={styles.sponsorCta}>
+                                <a href="/contact" className={styles.mediaKitBtn}>
+                                    📄 Request Our Media Kit & Pitch Deck
+                                </a>
+                                <p className={styles.ctaSubtitle}>Current sponsorship slots available for Q3 & Q4 2026</p>
+                            </div>
+                        </div>
+
+                        <div className={styles.textBlock}>
                             <h2>Our Values</h2>
                             <ul className={styles.valuesList}>
-                                <li><strong>Honesty:</strong> We provide genuine opinions, never influenced by sponsors</li>
-                                <li><strong>Quality:</strong> High-production video content with professional editing</li>
-                                <li><strong>Depth:</strong> Comprehensive analysis that goes beyond surface-level impressions</li>
-                                <li><strong>Community:</strong> Building a community of informed consumers</li>
+                                <li><strong>Honesty:</strong> We provide genuine opinions that build trust with our audience</li>
+                                <li><strong>Quality:</strong> Professional cinematic production for every review</li>
+                                <li><strong>Global Reach:</strong> Covering products and destinations across the globe</li>
+                                <li><strong>Community First:</strong> Helping our viewers find the best value and experiences</li>
                             </ul>
                         </div>
                     </div>

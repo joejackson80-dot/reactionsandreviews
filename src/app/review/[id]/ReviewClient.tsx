@@ -81,8 +81,39 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
         ));
     };
 
+    // SEO / Monetization: Generate JSON-LD for rich snippets
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Review',
+        'itemReviewed': {
+            '@type': 'Thing',
+            'name': activeReview.title,
+        },
+        'author': {
+            '@type': 'Person',
+            'name': activeReview.reviewer,
+        },
+        'reviewRating': {
+            '@type': 'Rating',
+            'ratingValue': activeReview.rating,
+            'bestRating': '5',
+            'worstRating': '1',
+        },
+        'publisher': {
+            '@type': 'Organization',
+            'name': 'Reactions and Reviews',
+        },
+        'datePublished': activeReview.publishDate,
+        'description': activeReview.description,
+    };
+
     return (
         <main className={styles.main}>
+            {/* SEO Structured Data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <Navigation />
 
             <section className={styles.reviewHero}>

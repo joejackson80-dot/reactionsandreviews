@@ -4,6 +4,7 @@ import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import CategoryFilter from '@/components/CategoryFilter';
 import VideoCard from '@/components/VideoCard';
+import NewsletterSignup from '@/components/NewsletterSignup';
 import Footer from '@/components/Footer';
 import { useReviews } from '@/context/ReviewContext';
 import styles from './page.module.css';
@@ -80,6 +81,7 @@ export default function Home() {
         </div>
       </section>
 
+      <NewsletterSignup />
       <Footer />
     </main>
   );
