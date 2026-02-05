@@ -114,6 +114,7 @@ export default function Footer() {
                         <h3 className={styles.sectionTitle}>Company</h3>
                         <nav className={styles.linksList}>
                             <Link href="/about">About Us</Link>
+                            <Link href="/media-kit">Media Kit</Link>
                             <Link href="/contact">Contact</Link>
                             <Link href="/privacy">Privacy Policy</Link>
                             <Link href="/terms">Terms of Service</Link>
