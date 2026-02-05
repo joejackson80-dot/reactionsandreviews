@@ -13,44 +13,48 @@
 :root {
   /* PRIMARY COLORS - Gradient Premium Theme */
   --color-black: #050505;
-  /* Main Background (Deepest Black) */
+  /* Deepest Black from Logo */
   --color-charcoal: #121212;
-  /* Card/Surface Background (Rich Dark) */
+  /* Rich Surface Dark */
   --color-platinum: #E5E7EB;
-  /* Body Text (Light Gray) */
+  /* Body Text (Silver Metallic feel) */
   --color-light-silver: #F9FAFB;
-  /* Headings (White/Bright) */
+  /* Headings (Pure Silver feel) */
 
   --color-dark-gray: #2A2A2A;
-  /* Borders/Separators */
+  /* Borders */
 
-  /* ACCENT COLORS - Red to Gold Gradient Theme */
+  /* ACCENT COLORS - EXACT LOGO PALETTE */
   --color-crimson: #DC2626;
-  /* Vibrant Red */
+  /* Logo Red Divider */
   --color-deep-red: #991B1B;
-  /* Darker Red for hovers */
+  /* Hover Red */
   --color-gold: #FFD700;
-  /* Premium Gold */
-  --color-warm-gold: #FCD34D;
-  /* Warm Gold */
-  --color-bronze: #D4AF37;
-  /* Bronze/Dark Gold */
+  /* Logo & Gold */
+  --color-soft-gold: #FCD34D;
+  /* Gold Shine */
+  --color-silver: #C0C0C0;
+  /* Logo Metallic Silver */
 
   /* RATING COLORS */
-  --color-5star: #FFD700;
+  --color-5star: var(--color-gold);
   --color-4star: #FBBF24;
   --color-3star: #F59E0B;
-  --color-2star: #DC2626;
-  --color-1star: #991B1B;
+  --color-2star: var(--color-crimson);
+  --color-1star: var(--color-deep-red);
 
-  /* GRADIENTS - Red to Gold Theme */
-  --gradient-primary: linear-gradient(135deg, #DC2626 0%, #F59E0B 50%, #FFD700 100%);
-  --gradient-red-gold: linear-gradient(90deg, #991B1B 0%, #DC2626 25%, #F59E0B 75%, #FFD700 100%);
-  --gradient-metallic: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 50%, #4B5563 100%);
-  --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #FCD34D 50%, #FFD700 100%);
+  /* SIGNATURE GRADIENTS */
+  --gradient-brand: linear-gradient(135deg, #DC2626 0%, #F59E0B 50%, #FFD700 100%);
+  /* Red to Gold */
+  --gradient-metallic: linear-gradient(135deg, #F9FAFB 0%, #C0C0C0 50%, #909090 100%);
+  /* Logo Silver */
+  --gradient-gold-shine: linear-gradient(135deg, #FFD700 0%, #FFF8E1 50%, #FFD700 100%);
+
   --gradient-dark: linear-gradient(180deg, #121212 0%, #050505 100%);
-  --gradient-glow: radial-gradient(circle at center, rgba(220, 38, 38, 0.2) 0%, rgba(255, 215, 0, 0.1) 50%, transparent 100%);
-  --gradient-border: linear-gradient(135deg, #DC2626 0%, #FFD700 100%);
+  --gradient-glow-red: radial-gradient(circle at center, rgba(220, 38, 38, 0.25) 0%, transparent 70%);
+  --gradient-glow-gold: radial-gradient(circle at center, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  --gradient-border-logo: linear-gradient(135deg, #DC2626 0%, #FFD700 100%);
+  --gradient-border-silver: linear-gradient(135deg, #C0C0C0 0%, #4B5563 100%);
 
   /* TYPOGRAPHY */
   --font-heading: 'Cinzel', serif;
