@@ -13,10 +13,10 @@ interface Category {
 const categories: Category[] = [
     { id: 'all', name: 'All Reviews', icon: '🎬', color: '#C8C8C8' },
     { id: 'movies', name: 'Movies', icon: '🎥', color: '#DC2626' },
-    { id: 'books', name: 'Books', icon: '📚', color: '#2563EB' },
-    { id: 'music', name: 'Music', icon: '🎵', color: '#7C3AED' },
-    { id: 'trending', name: 'Trending Content', icon: '🔥', color: '#F59E0B' },
-    { id: 'products', name: 'Products', icon: '📦', color: '#10B981' },
+    { id: 'tech', name: 'Tech', icon: '💻', color: '#2563EB' },
+    { id: 'games', name: 'Games', icon: '🎮', color: '#7C3AED' },
+    { id: 'music', name: 'Music', icon: '🎵', color: '#059669' },
+    { id: 'products', name: 'Products', icon: '📦', color: '#D97706' },
 ];
 
 interface CategoryFilterProps {
