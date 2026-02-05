@@ -102,9 +102,9 @@ export default function Footer() {
                         <h3 className={styles.sectionTitle}>Categories</h3>
                         <nav className={styles.linksList}>
                             <Link href="/categories/movies">Movies</Link>
-                            <Link href="/categories/tech">Tech</Link>
-                            <Link href="/categories/games">Games</Link>
+                            <Link href="/categories/books">Books</Link>
                             <Link href="/categories/music">Music</Link>
+                            <Link href="/categories/trending">Trending</Link>
                             <Link href="/categories/products">Products</Link>
                         </nav>
                     </div>
