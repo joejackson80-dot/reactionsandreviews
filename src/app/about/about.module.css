@@ -1,0 +1,216 @@
+.main {
+    min-height: 100vh;
+    background: var(--color-black);
+}
+
+.heroSection {
+    padding: 8rem 0 4rem;
+    background: linear-gradient(180deg, var(--color-charcoal) 0%, var(--color-black) 100%);
+    border-bottom: 2px solid var(--color-dark-gray);
+    text-align: center;
+}
+
+.heroContent {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.pageTitle {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    color: var(--color-light-silver);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    background: var(--gradient-metallic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.pageSubtitle {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    color: var(--color-platinum);
+    line-height: 1.6;
+}
+
+.contentSection {
+    padding: 4rem 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.textBlock h2 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--color-gold);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.textBlock p {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-platinum);
+    margin-bottom: 1.5rem;
+}
+
+/* Stats Grid */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.statCard {
+    padding: 2rem;
+    background: var(--color-charcoal);
+    border: 2px solid var(--color-dark-gray);
+    border-radius: var(--border-radius);
+    text-align: center;
+    transition: var(--transition-normal);
+}
+
+.statCard:hover {
+    border-color: var(--color-crimson);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-glow-red);
+}
+
+.statNumber {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.statLabel {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-platinum);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Features List */
+.featuresList {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--color-charcoal);
+    border: 2px solid var(--color-dark-gray);
+    border-radius: var(--border-radius);
+    transition: var(--transition-normal);
+}
+
+.feature:hover {
+    border-color: var(--color-crimson);
+    transform: translateX(10px);
+}
+
+.featureIcon {
+    font-size: 2.5rem;
+    line-height: 1;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.feature h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--color-light-silver);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.feature p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-platinum);
+    margin-bottom: 0;
+}
+
+/* Values List */
+.valuesList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.valuesList li {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-platinum);
+    padding-left: 2rem;
+    position: relative;
+}
+
+.valuesList li::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--color-crimson);
+    font-size: 0.875rem;
+}
+
+.valuesList li strong {
+    color: var(--color-gold);
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .heroSection {
+        padding: 6rem 0 3rem;
+    }
+
+    .contentSection {
+        padding: 3rem 0;
+    }
+
+    .content {
+        gap: 3rem;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .statNumber {
+        font-size: 2.5rem;
+    }
+
+    .featureIcon {
+        font-size: 2rem;
+    }
+}

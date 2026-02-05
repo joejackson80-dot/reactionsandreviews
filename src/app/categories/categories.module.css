@@ -1,0 +1,277 @@
+.main {
+    min-height: 100vh;
+    background: var(--color-black);
+}
+
+.heroSection {
+    padding: 8rem 0 4rem;
+    background: linear-gradient(180deg, var(--color-charcoal) 0%, var(--color-black) 100%);
+    border-bottom: 2px solid var(--color-dark-gray);
+    text-align: center;
+}
+
+.heroContent {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.pageTitle {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    color: var(--color-light-silver);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    background: var(--gradient-metallic);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.pageSubtitle {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    color: var(--color-platinum);
+    line-height: 1.6;
+}
+
+.categoriesSection {
+    padding: 4rem 0;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.categoriesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.categoryCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 2rem;
+    background: var(--color-charcoal);
+    border: 2px solid var(--color-dark-gray);
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    transition: all var(--transition-normal);
+    overflow: hidden;
+}
+
+.categoryCard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+            var(--category-color, var(--color-crimson)) 0%,
+            transparent 100%);
+    opacity: 0;
+    transition: var(--transition-normal);
+}
+
+.categoryCard:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--category-color, var(--color-crimson));
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.categoryCard:hover::before {
+    opacity: 0.15;
+}
+
+.categoryIcon {
+    font-size: 4rem;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    transition: var(--transition-normal);
+    position: relative;
+    z-index: 1;
+}
+
+.categoryCard:hover .categoryIcon {
+    transform: scale(1.2) rotate(5deg);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
+}
+
+.categoryName {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-light-silver);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    transition: var(--transition-fast);
+}
+
+.categoryCard:hover .categoryName {
+    color: var(--category-color, var(--color-crimson));
+}
+
+.categoryDescription {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-platinum);
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.categoryFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-dark-gray);
+    position: relative;
+    z-index: 1;
+}
+
+.categoryCount {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-platinum);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.categoryArrow {
+    font-size: 1.5rem;
+    color: var(--category-color, var(--color-crimson));
+    transition: var(--transition-fast);
+}
+
+.categoryCard:hover .categoryArrow {
+    transform: translateX(5px);
+}
+
+.categoryGlow {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--border-radius-lg);
+    box-shadow: inset 0 0 40px var(--category-color, var(--color-crimson));
+    opacity: 0;
+    transition: var(--transition-normal);
+    pointer-events: none;
+}
+
+.categoryCard:hover .categoryGlow {
+    opacity: 0.2;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .heroSection {
+        padding: 6rem 0 3rem;
+    }
+
+    .categoriesGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .categoryCard {
+        padding: 2rem 1.5rem;
+    }
+
+    .categoryIcon {
+        font-size: 3rem;
+    }
+
+    .categoryName {
+        font-size: 1.5rem;
+    }
+}
+
+.previewSection {
+    padding: 4rem 0;
+    border-top: 1px solid var(--color-charcoal);
+}
+
+.sectionTitle {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--color-light-silver);
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+    /* Match container padding if needed, or just align with grid */
+}
+
+.previewGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+}
+
+.previewCard {
+    background: var(--color-charcoal);
+    border: 1px solid var(--color-dark-gray);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    text-decoration: none;
+    transition: var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+}
+
+.previewCard:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-gold);
+}
+
+.previewThumbnail {
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.previewOverlay {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: white;
+    font-weight: 600;
+}
+
+.previewInfo {
+    padding: 1rem;
+}
+
+.previewInfo h3 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-platinum);
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.previewInfo span {
+    font-size: 0.75rem;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    font-weight: 600;
+}

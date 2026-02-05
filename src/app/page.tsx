@@ -1,66 +1,86 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import { useState, useMemo } from 'react';
+import Navigation from '@/components/Navigation';
+import Hero from '@/components/Hero';
+import CategoryFilter from '@/components/CategoryFilter';
+import VideoCard from '@/components/VideoCard';
+import Footer from '@/components/Footer';
+import { useReviews } from '@/context/ReviewContext';
+import styles from './page.module.css';
 
 export default function Home() {
+  const { reviews } = useReviews();
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Filter only published reviews
+  const publishedReviews = reviews.filter(review => review.status === 'published');
+
+  // Memoize sorted trending videos
+  const trendingVideos = useMemo(() => {
+    return [...publishedReviews]
+      .sort((a, b) => (b.likes || 0) - (a.likes || 0))
+      .slice(0, 3);
+  }, [publishedReviews]);
+
+  const filteredVideos = selectedCategory === 'all'
+    ? publishedReviews
+    : publishedReviews.filter(video =>
+      video.category.toLowerCase() === selectedCategory.toLowerCase()
+    );
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className={`${styles.main} fade-in`}>
+      <Navigation />
+      <Hero />
+
+      {/* Trending Section - Show only on 'all' view */}
+      {selectedCategory === 'all' && trendingVideos.length > 0 && (
+        <section className={styles.trendingSection}>
+          <div className={styles.container}>
+            <div className={styles.headerRow}>
+              <h2 className={styles.sectionTitle}>🔥 Trending Now</h2>
+              <p className={styles.sectionSubtitle}>Most liked by the community</p>
+            </div>
+            <div className={styles.videosGrid}>
+              {trendingVideos.map((video) => (
+                <VideoCard key={video.id} {...video} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className={styles.categorySection}>
+        <CategoryFilter onFilterChange={setSelectedCategory} />
+      </section>
+
+      <section className={styles.videosSection}>
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>
+              {selectedCategory === 'all' ? 'Latest Reviews' : `${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} Reviews`}
+            </h2>
+            <p className={styles.sectionSubtitle}>
+              Watch in-depth video reactions and honest reviews
+            </p>
+          </div>
+
+          <div className={styles.videosGrid}>
+            {filteredVideos.map((video) => (
+              <VideoCard key={video.id} {...video} />
+            ))}
+          </div>
+
+          {filteredVideos.length === 0 && (
+            <div className={styles.noResults}>
+              <p>No reviews found in this category yet.</p>
+              <p className={styles.noResultsSubtext}>Check back soon for new content!</p>
+            </div>
+          )}
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+
+      <Footer />
+    </main>
   );
 }
