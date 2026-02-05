@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useReviews, Comment } from '@/context/ReviewContext';
+import AuthModal from './AuthModal';
 import styles from './CommentsSection.module.css';
 
 interface CommentsSectionProps {
@@ -12,9 +14,26 @@ export default function CommentsSection({ reviewId }: CommentsSectionProps) {
     const { getComments, addComment } = useReviews();
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState('');
-    const [authorName, setAuthorName] = useState('');
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
+    const [showAuthModal, setShowAuthModal] = useState(false);
+    const [user, setUser] = useState<any>(null);
+    const supabase = createClientComponentClient();
+
+    // Check auth status
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            setUser(session?.user ?? null);
+        };
+        checkUser();
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => subscription.unsubscribe();
+    }, [supabase.auth]);
 
     const loadComments = useCallback(async () => {
         const data = await getComments(reviewId);
@@ -28,19 +47,30 @@ export default function CommentsSection({ reviewId }: CommentsSectionProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newComment.trim() || !authorName.trim()) return;
+
+        if (!user) {
+            setShowAuthModal(true);
+            return;
+        }
+
+        if (!newComment.trim()) return;
 
         setSubmitting(true);
         try {
+            const authorName = user.email?.split('@')[0] || 'Anonymous';
             await addComment(reviewId, authorName, newComment);
             setNewComment('');
-            setAuthorName('');
-            loadComments(); // Refresh comments
+            loadComments();
         } catch (error) {
             console.error('Failed to post comment', error);
         } finally {
             setSubmitting(false);
         }
+    };
+
+    const handleSignOut = async () => {
+        await supabase.auth.signOut();
+        setUser(null);
     };
 
     if (loading) return <div className={styles.loading}>Loading comments...</div>;
@@ -69,29 +99,48 @@ export default function CommentsSection({ reviewId }: CommentsSectionProps) {
 
             <form onSubmit={handleSubmit} className={styles.form}>
                 <h4 className={styles.formTitle}>Leave a Comment</h4>
-                <div className={styles.inputGroup}>
-                    <input
-                        type="text"
-                        placeholder="Your Name"
-                        value={authorName}
-                        onChange={(e) => setAuthorName(e.target.value)}
-                        required
-                        className={styles.input}
-                    />
-                </div>
+
+                {user && (
+                    <div className={styles.userInfo}>
+                        <span>Signed in as <strong>{user.email}</strong></span>
+                        <button type="button" onClick={handleSignOut} className={styles.signOutBtn}>
+                            Sign Out
+                        </button>
+                    </div>
+                )}
+
                 <div className={styles.inputGroup}>
                     <textarea
-                        placeholder="What are your thoughts?"
+                        placeholder={user ? "What are your thoughts?" : "Sign in to leave a comment..."}
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         required
                         className={styles.textarea}
+                        disabled={!user}
+                        onClick={() => !user && setShowAuthModal(true)}
                     />
                 </div>
-                <button type="submit" disabled={submitting} className={styles.submitBtn}>
-                    {submitting ? 'Posting...' : 'Post Comment'}
+
+                <button
+                    type="submit"
+                    disabled={submitting || !user}
+                    className={styles.submitBtn}
+                    onClick={(e) => {
+                        if (!user) {
+                            e.preventDefault();
+                            setShowAuthModal(true);
+                        }
+                    }}
+                >
+                    {submitting ? 'Posting...' : user ? 'Post Comment' : 'Sign in to Comment'}
                 </button>
             </form>
+
+            <AuthModal
+                isOpen={showAuthModal}
+                onClose={() => setShowAuthModal(false)}
+                onSuccess={() => setShowAuthModal(false)}
+            />
         </section>
     );
 }

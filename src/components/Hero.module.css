@@ -118,6 +118,9 @@
     color: var(--color-light-silver);
     text-transform: uppercase;
     letter-spacing: 0.02em;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
 }
 
 .highlight {
