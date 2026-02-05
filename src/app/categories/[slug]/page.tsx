@@ -33,9 +33,22 @@ export default function CategoryPage() {
         );
     }
 
-    const categoryReviews = reviews.filter(
-        r => r.category.toLowerCase() === category.name.toLowerCase() && r.status === 'published'
-    );
+    const categoryReviews = reviews.filter(r => {
+        if (!r.status || r.status !== 'published') return false;
+
+        const reviewCategory = r.category.toLowerCase();
+        const currentCategoryName = category.name.toLowerCase();
+
+        // Match exact name
+        if (reviewCategory === currentCategoryName) return true;
+
+        // Special case for Movies & TV to catch older 'Movies' entries
+        if (categoryKey === 'movies' && (reviewCategory === 'movies' || reviewCategory === 'tv' || reviewCategory === 'television')) {
+            return true;
+        }
+
+        return false;
+    });
 
     return (
         <main className={styles.main}>

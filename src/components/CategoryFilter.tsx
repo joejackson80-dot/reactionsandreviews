@@ -3,20 +3,15 @@
 import { useState } from 'react';
 import styles from './CategoryFilter.module.css';
 
-interface Category {
-    id: string;
-    name: string;
-    icon: string;
-    color: string;
-}
 
-const categories: Category[] = [
+import { CATEGORY_CONFIG } from '@/lib/constants';
+
+const categories = [
     { id: 'all', name: 'All Reviews', icon: '🎬', color: '#C8C8C8' },
-    { id: 'movies', name: 'Movies', icon: '🎥', color: '#DC2626' },
-    { id: 'books', name: 'Books', icon: '📚', color: '#2563EB' },
-    { id: 'music', name: 'Music', icon: '🎵', color: '#7C3AED' },
-    { id: 'trending', name: 'Trending Content', icon: '🔥', color: '#F59E0B' },
-    { id: 'products', name: 'Products', icon: '📦', color: '#10B981' },
+    ...Object.entries(CATEGORY_CONFIG).map(([id, config]) => ({
+        id,
+        ...config
+    }))
 ];
 
 interface CategoryFilterProps {

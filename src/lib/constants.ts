@@ -1,9 +1,9 @@
 export const CATEGORY_CONFIG: Record<string, { name: string; icon: string; color: string; description: string }> = {
     movies: {
-        name: 'Movies',
-        icon: '🎥',
+        name: 'Movies & TV',
+        icon: '🎬',
         color: '#DC2626',
-        description: 'In-depth film reviews, reactions, and cinema analysis',
+        description: 'In-depth reviews and reactions to the latest movies and television shows.',
     },
     books: {
         name: 'Books',
