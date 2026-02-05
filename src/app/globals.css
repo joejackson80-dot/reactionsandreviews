@@ -111,8 +111,7 @@ body {
 }
 
 /* Luxury Watermark Pattern & Glow Overlay */
-body::before,
-body::after {
+body::before {
   content: '';
   position: fixed;
   inset: 0;
@@ -128,16 +127,20 @@ body::before {
   z-index: -2;
 }
 
-/* Layer 2: Repeating Logo Watermark */
+/* Layer 2: Single Brand Logo Watermark */
 body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
   background-image: url('/logo.jpg');
-  background-repeat: repeat;
-  background-size: 120px;
+  background-repeat: no-repeat;
+  background-size: clamp(300px, 40vw, 600px);
   background-position: center;
-  opacity: 0.04;
-  /* Ultra-subtle luxury feel */
+  opacity: 0.05;
+  /* Subtle focal brand presence */
   z-index: -1;
-  filter: grayscale(1) brightness(1.5);
+  filter: grayscale(1) brightness(1.2);
 }
 
 body>* {
