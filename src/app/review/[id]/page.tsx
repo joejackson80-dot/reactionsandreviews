@@ -22,6 +22,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const id = params.id;
     const review = await getReview(id);
+    const baseUrl = 'https://reactionsandreviews.vercel.app';
 
     if (!review) {
         return {
@@ -30,20 +31,33 @@ export async function generateMetadata(
         };
     }
 
+    const title = `${review.title} - Review & Analysis`;
+    const description = review.description || `Read our detailed review of ${review.title}. Professional analysis, key highlights, and honest opinions.`;
+    const imageUrl = review.thumbnail?.startsWith('http') ? review.thumbnail : `${baseUrl}${review.thumbnail || '/logo.jpg'}`;
+
     return {
-        title: `${review.title} - Review & Analysis | Reactions and Reviews`,
-        description: review.description || `Read our detailed review of ${review.title}. Professional analysis, key highlights, and honest opinions.`,
+        title: title,
+        description: description,
         openGraph: {
-            title: review.title,
-            description: review.description,
-            type: 'article',
-            images: [review.thumbnail || '/default-review-thumb.jpg'], // Fallback image
+            title: title,
+            description: description,
+            type: 'video.movie',
+            url: `${baseUrl}/review/${id}`,
+            images: [{
+                url: imageUrl,
+                width: 1200,
+                height: 630,
+                alt: review.title
+            }],
         },
         twitter: {
             card: 'summary_large_image',
-            title: review.title,
-            description: review.description,
-            images: [review.thumbnail || '/default-review-thumb.jpg'],
+            title: title,
+            description: description,
+            images: [imageUrl],
+        },
+        alternates: {
+            canonical: `${baseUrl}/review/${id}`,
         }
     };
 }
@@ -51,30 +65,55 @@ export async function generateMetadata(
 export default async function ReviewPage({ params }: Props) {
     const id = params.id;
     const review = await getReview(id);
+    const baseUrl = 'https://reactionsandreviews.vercel.app';
 
     // Prepare JSON-LD structured data
     const jsonLd = review ? {
         '@context': 'https://schema.org',
-        '@type': 'Review',
-        'itemReviewed': {
-            '@type': 'Thing',
-            'name': review.title,
-        },
-        'author': {
-            '@type': 'Person',
-            'name': review.reviewer || 'Reactions and Reviews Team',
-        },
-        'reviewRating': {
-            '@type': 'Rating',
-            'ratingValue': review.rating || 0,
-            'bestRating': 5,
-        },
-        'publisher': {
-            '@type': 'Organization',
-            'name': 'Reactions and Reviews',
-        },
-        'datePublished': review.publish_date,
-        'description': review.description,
+        '@graph': [
+            {
+                '@type': 'Review',
+                'itemReviewed': {
+                    '@type': 'Thing',
+                    'name': review.title,
+                    'image': review.thumbnail,
+                },
+                'author': {
+                    '@type': 'Person',
+                    'name': review.reviewer || 'Reactions and Reviews Team',
+                },
+                'reviewRating': {
+                    '@type': 'Rating',
+                    'ratingValue': review.rating || 0,
+                    'bestRating': 5,
+                    'worstRating': 1,
+                },
+                'publisher': {
+                    '@type': 'Organization',
+                    'name': 'Reactions and Reviews',
+                    'logo': {
+                        '@type': 'ImageObject',
+                        'url': `${baseUrl}/logo.jpg`
+                    }
+                },
+                'datePublished': review.publish_date,
+                'description': review.description,
+            },
+            {
+                '@type': 'VideoObject',
+                'name': review.title,
+                'description': review.description,
+                'thumbnailUrl': review.thumbnail,
+                'uploadDate': review.publish_date,
+                'duration': review.duration || 'PT2M', // Fallback duration ISO format
+                'embedUrl': review.video_embed,
+                'interactionStatistic': {
+                    '@type': 'InteractionCounter',
+                    'interactionType': 'https://schema.org/WatchAction',
+                    'userInteractionCount': parseInt(review.views?.replace(/[^0-9]/g, '') || '0')
+                }
+            }
+        ]
     } : null;
 
     return (

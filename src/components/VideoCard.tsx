@@ -14,6 +14,8 @@ interface VideoCardProps {
     reviewer: string;
 }
 
+import { motion } from 'framer-motion';
+
 export default function VideoCard({
     id,
     title,
@@ -25,7 +27,6 @@ export default function VideoCard({
     reviewer
 }: VideoCardProps) {
     const getCategoryColor = (cat: string) => {
-        // Find by name match (case-insensitive) or slug
         const configItem = Object.values(CATEGORY_CONFIG).find(
             config => config.name.toLowerCase() === cat.toLowerCase()
         ) || CATEGORY_CONFIG[cat.toLowerCase()];
@@ -45,48 +46,62 @@ export default function VideoCard({
     };
 
     return (
-        <Link href={`/review/${id}`} className={styles.videoCard}>
-            <div className={styles.thumbnail}>
-                <Image
-                    src={thumbnail}
-                    alt={title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className={styles.thumbnailImage}
-                />
-                <div className={styles.playOverlay}>
-                    <div className={styles.playButton}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
+        <Link href={`/review/${id}`} passHref legacyBehavior>
+            <motion.a
+                className={styles.videoCard}
+                whileHover={{
+                    y: -8,
+                    transition: { duration: 0.2, ease: "easeOut" }
+                }}
+                whileTap={{ scale: 0.98 }}
+                layout
+            >
+                <div className={styles.thumbnail}>
+                    <Image
+                        src={thumbnail}
+                        alt={title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className={styles.thumbnailImage}
+                    />
+                    <div className={styles.playOverlay}>
+                        <motion.div
+                            className={styles.playButton}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            whileHover={{ scale: 1.1, opacity: 1 }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </motion.div>
+                    </div>
+                    <div className={styles.duration}>{duration}</div>
+                    <div
+                        className={styles.categoryBadge}
+                        style={{ borderColor: getCategoryColor(category) }}
+                    >
+                        {category}
                     </div>
                 </div>
-                <div className={styles.duration}>{duration}</div>
-                <div
-                    className={styles.categoryBadge}
-                    style={{ borderColor: getCategoryColor(category) }}
-                >
-                    {category}
-                </div>
-            </div>
 
-            <div className={styles.cardContent}>
-                <h3 className={styles.title}>{title}</h3>
+                <div className={styles.cardContent}>
+                    <h3 className={styles.title}>{title}</h3>
 
-                <div className={styles.meta}>
-                    <div className={styles.rating}>
-                        <div className={styles.stars}>
-                            {renderStars(rating)}
+                    <div className={styles.meta}>
+                        <div className={styles.rating}>
+                            <div className={styles.stars}>
+                                {renderStars(rating)}
+                            </div>
+                            <span className={styles.ratingNumber}>{rating}.0</span>
                         </div>
-                        <span className={styles.ratingNumber}>{rating}.0</span>
-                    </div>
 
-                    <div className={styles.info}>
-                        <span className={styles.reviewer}>{reviewer}</span>
-                        <span className={styles.views}>{views} views</span>
+                        <div className={styles.info}>
+                            <span className={styles.reviewer}>{reviewer}</span>
+                            <span className={styles.views}>{views} views</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </motion.a>
         </Link>
     );
 }

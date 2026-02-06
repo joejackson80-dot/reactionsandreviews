@@ -38,10 +38,19 @@ export default function AdminDashboard() {
     };
 
     useEffect(() => {
-        if (!authLoading && !user) {
-            router.push('/login');
+        if (!authLoading) {
+            if (!user) {
+                router.push('/login');
+            } else if (user.role !== 'admin') {
+                router.push('/');
+                addToast({
+                    type: 'error',
+                    title: 'Access Denied',
+                    message: 'You do not have permission to access the Admin Panel.'
+                });
+            }
         }
-    }, [user, authLoading, router]);
+    }, [user, authLoading, router, addToast]);
 
     const handleSignOut = async () => {
         await signOut();
