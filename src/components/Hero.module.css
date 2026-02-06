@@ -4,11 +4,60 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background:
-        radial-gradient(circle at 20% 50%, rgba(220, 38, 38, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 80% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
-        linear-gradient(180deg, rgba(5, 5, 5, 0.7) 0%, rgba(18, 18, 18, 0.8) 100%);
+    background: #050505;
     overflow: hidden;
+}
+
+.meshBackground {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.meshPart1,
+.meshPart2,
+.meshPart3 {
+    position: absolute;
+    width: 40vw;
+    height: 40vw;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.2;
+    mix-blend-mode: screen;
+}
+
+.meshPart1 {
+    top: -10vw;
+    left: -10vw;
+    background: radial-gradient(circle, var(--color-crimson) 0%, transparent 70%);
+    animation: drift 20s infinite alternate linear;
+}
+
+.meshPart2 {
+    bottom: -10vw;
+    right: -10vw;
+    background: radial-gradient(circle, var(--color-gold) 0%, transparent 70%);
+    animation: drift 25s infinite alternate-reverse linear;
+}
+
+.meshPart3 {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, var(--color-crimson) 0%, transparent 70%);
+    opacity: 0.1;
+    animation: pulse 10s infinite alternate ease-in-out;
+}
+
+@keyframes drift {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(10vw, 10vh);
+    }
 }
 
 .heroOverlay {

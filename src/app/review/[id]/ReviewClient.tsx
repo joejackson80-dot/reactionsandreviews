@@ -11,6 +11,7 @@ import CommentsSection from '@/components/CommentsSection';
 import LikeButton from '@/components/LikeButton';
 import styles from './review.module.css';
 import { Review } from '@/context/ReviewContext';
+import ScrollProgress from '@/components/ScrollProgress';
 
 interface ReviewClientProps {
     reviewId: string;
@@ -52,11 +53,19 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
     };
 
     const renderStars = (rating: number) => {
-        return Array.from({ length: 5 }, (_, i) => (
-            <span key={i} className={i < rating ? styles.starFilled : styles.starEmpty}>
-                ★
-            </span>
-        ));
+        return (
+            <div className={styles.starsContainer}>
+                {Array.from({ length: 5 }, (_, i) => (
+                    <motion.span
+                        key={i}
+                        className={i < rating ? styles.starFilled : styles.starEmpty}
+                        whileHover={{ scale: 1.2, filter: "drop-shadow(0 0 8px var(--color-gold))" }}
+                    >
+                        ★
+                    </motion.span>
+                ))}
+            </div>
+        );
     };
 
     const mapDbReview = (r: unknown): Review => {
@@ -135,6 +144,7 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
     return (
         <LayoutGroup>
             <main className={styles.main}>
+                <ScrollProgress />
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

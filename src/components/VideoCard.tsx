@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { CATEGORY_CONFIG } from '@/lib/constants';
+import { Play, Eye } from 'lucide-react';
 import styles from './VideoCard.module.css';
+import { motion } from 'framer-motion';
 
 interface VideoCardProps {
     id: string;
@@ -14,8 +15,6 @@ interface VideoCardProps {
     reviewer: string;
 }
 
-import { motion } from 'framer-motion';
-
 export default function VideoCard({
     id,
     title,
@@ -26,14 +25,6 @@ export default function VideoCard({
     duration,
     reviewer
 }: VideoCardProps) {
-    const getCategoryColor = (cat: string) => {
-        const configItem = Object.values(CATEGORY_CONFIG).find(
-            config => config.name.toLowerCase() === cat.toLowerCase()
-        ) || CATEGORY_CONFIG[cat.toLowerCase()];
-
-        return configItem?.color || '#94A3B8';
-    };
-
     const renderStars = (rating: number) => {
         return Array.from({ length: 5 }, (_, i) => (
             <span
@@ -48,10 +39,10 @@ export default function VideoCard({
     return (
         <Link href={`/review/${id}`} passHref legacyBehavior>
             <motion.a
-                className={styles.videoCard}
+                className={`${styles.videoCard} shimmer`}
                 whileHover={{
-                    y: -8,
-                    transition: { duration: 0.2, ease: "easeOut" }
+                    y: -10,
+                    transition: { duration: 0.3, ease: "easeOut" }
                 }}
                 whileTap={{ scale: 0.98 }}
                 layout
@@ -67,26 +58,17 @@ export default function VideoCard({
                     <div className={styles.playOverlay}>
                         <motion.div
                             className={styles.playButton}
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            whileHover={{ scale: 1.1, opacity: 1 }}
+                            whileHover={{ scale: 1.1, backgroundColor: 'var(--color-gold)', color: 'black' }}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
+                            <Play fill="currentColor" size={24} />
                         </motion.div>
                     </div>
                     <div className={styles.duration}>{duration}</div>
-                    <div
-                        className={styles.categoryBadge}
-                        style={{ borderColor: getCategoryColor(category) }}
-                    >
-                        {category}
-                    </div>
+                    <div className={styles.categoryBadge}>{category}</div>
                 </div>
 
                 <div className={styles.cardContent}>
                     <h3 className={styles.title}>{title}</h3>
-
                     <div className={styles.meta}>
                         <div className={styles.rating}>
                             <div className={styles.stars}>
@@ -97,7 +79,10 @@ export default function VideoCard({
 
                         <div className={styles.info}>
                             <span className={styles.reviewer}>{reviewer}</span>
-                            <span className={styles.views}>{views} views</span>
+                            <div className={styles.views}>
+                                <Eye size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+                                <span>{views} views</span>
+                            </div>
                         </div>
                     </div>
                 </div>

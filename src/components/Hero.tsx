@@ -1,24 +1,76 @@
+import { useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import styles from './Hero.module.css';
 
 export default function Hero() {
+    const heroRef = useRef<HTMLDivElement>(null);
+    const mouseX = useMotionValue(50);
+    const mouseY = useMotionValue(50);
+
+    // Smooth physics for the spotlight
+    const mouseXSpring = useSpring(mouseX, { stiffness: 500, damping: 50 });
+    const mouseYSpring = useSpring(mouseY, { stiffness: 500, damping: 50 });
+
+    const spotlightX = useTransform(mouseXSpring, (val) => `${val}%`);
+    const spotlightY = useTransform(mouseYSpring, (val) => `${val}%`);
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!heroRef.current) return;
+            const { left, top, width, height } = heroRef.current.getBoundingClientRect();
+            mouseX.set(((e.clientX - left) / width) * 100);
+            mouseY.set(((e.clientY - top) / height) * 100);
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, [mouseX, mouseY]);
+
     return (
-        <section className={styles.hero}>
+        <motion.section
+            ref={heroRef}
+            className={`${styles.hero} spotlight-container`}
+            style={{
+                '--mouse-x': spotlightX,
+                '--mouse-y': spotlightY,
+            } as React.CSSProperties}
+        >
+            {/* Animated Mesh Background */}
+            <div className={styles.meshBackground}>
+                <div className={styles.meshPart1}></div>
+                <div className={styles.meshPart2}></div>
+                <div className={styles.meshPart3}></div>
+            </div>
+
             <div className={styles.heroOverlay}></div>
-            <div className={styles.heroContent}>
-                <div className={styles.badge}>
+
+            <motion.div
+                className={styles.heroContent}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+                <motion.div
+                    className={styles.badge}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
                     <span className={styles.badgeDot}></span>
                     PREMIUM VIDEO REVIEWS
-                </div>
+                </motion.div>
+
                 <h1 className={styles.heroTitle}>
                     Honest <span className={styles.highlight}>Reactions</span>
                     <br />
                     Unfiltered <span className={styles.highlightGold}>Reviews</span>
                 </h1>
+
                 <p className={styles.heroSubtitle}>
                     Watch in-depth video reactions and reviews of movies, tech, games, music, and products.
                     Real opinions from real people.
                 </p>
+
                 <div className={styles.heroCta}>
                     <Link href="/reviews" className={styles.btnPrimary}>
                         <span>Explore Reviews</span>
@@ -30,27 +82,38 @@ export default function Hero() {
                         <span>Submit Your Review</span>
                     </Link>
                 </div>
+
                 <div className={styles.statsGrid}>
-                    <div className={styles.statCard}>
-                        <div className={styles.statNumber}>500+</div>
-                        <div className={styles.statLabel}>Video Reviews</div>
-                    </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statNumber}>50K+</div>
-                        <div className={styles.statLabel}>Monthly Views</div>
-                    </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statNumber}>4.8★</div>
-                        <div className={styles.statLabel}>Avg Rating</div>
-                    </div>
+                    {[
+                        { num: '500+', label: 'Video Reviews' },
+                        { num: '50K+', label: 'Monthly Views' },
+                        { num: '4.8★', label: 'Avg Rating' }
+                    ].map((stat, i) => (
+                        <motion.div
+                            key={i}
+                            className={styles.statCard}
+                            whileHover={{ y: -5, borderColor: 'var(--color-crimson)' }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.5 + i * 0.1 }}
+                        >
+                            <div className={styles.statNumber}>{stat.num}</div>
+                            <div className={styles.statLabel}>{stat.label}</div>
+                        </motion.div>
+                    ))}
                 </div>
-            </div>
-            <div className={styles.scrollIndicator}>
+            </motion.div>
+
+            <motion.div
+                className={styles.scrollIndicator}
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
                 <div className={styles.mouse}>
                     <div className={styles.mouseWheel}></div>
                 </div>
                 <span>Scroll to explore</span>
-            </div>
-        </section>
+            </motion.div>
+        </motion.section>
     );
 }
