@@ -118,6 +118,8 @@
     color: var(--color-light-silver);
     text-transform: uppercase;
     letter-spacing: -0.01em;
+    hyphens: none;
+    -webkit-hyphens: none;
 }
 
 .highlight {
@@ -423,8 +425,8 @@
 
     .heroTitle {
         font-size: 1.75rem;
-        word-wrap: break-word;
-        hyphens: auto;
+        hyphens: none;
+        -webkit-hyphens: none;
     }
 
     .heroSubtitle {
