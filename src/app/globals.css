@@ -167,6 +167,8 @@ h6 {
   hyphens: none;
   -webkit-hyphens: none;
   -ms-hyphens: none;
+  padding: 0 0.15em;
+  /* Prevent side clipping of wide characters like S */
 }
 
 h1 {
@@ -629,7 +631,8 @@ a:hover {
    ============================================ */
 @media (max-width: 768px) {
   .container {
-    padding: 0 var(--spacing-sm);
+    padding: 0 var(--spacing-md);
+    /* Use MD spacing for better mobile breathing room */
   }
 
   .section {
