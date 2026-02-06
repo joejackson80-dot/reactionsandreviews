@@ -1,25 +1,76 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getSetting, updateSetting } from '@/lib/settings';
 import styles from '../admin.module.css';
 import pageStyles from './settings.module.css';
 
+interface SettingsState {
+    siteName: string;
+    siteDescription: string;
+    contactEmail: string;
+    mediaKitContactEmail: string;
+    showMediaKitEmailAddress: boolean;
+    reviewsPerPage: number;
+    autoApproveReviews: boolean;
+    allowUserSubmissions: boolean;
+    maintenanceMode: boolean;
+}
+
 export default function AdminSettings() {
-    const [settings, setSettings] = useState({
+    const [settings, setSettings] = useState<SettingsState>({
         siteName: 'Reactions and Reviews',
         siteDescription: 'Premium video reviews and honest reactions',
         contactEmail: 'contact@reactionsandreviews.com',
+        mediaKitContactEmail: 'joejackson80@gmail.com',
+        showMediaKitEmailAddress: false,
         reviewsPerPage: 12,
         autoApproveReviews: false,
         allowUserSubmissions: true,
-        requireEmailVerification: true,
         maintenanceMode: false,
     });
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
-    const handleSave = () => {
-        alert('Settings saved successfully!');
+    useEffect(() => {
+        async function loadSettings() {
+            const keys = Object.keys(settings) as Array<keyof SettingsState>;
+            const loadedSettings = { ...settings };
+
+            for (const key of keys) {
+                const val = await getSetting(key, settings[key]);
+                loadedSettings[key] = val as never;
+            }
+
+            setSettings(loadedSettings);
+            setIsLoading(false);
+        }
+        loadSettings();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        const keys = Object.keys(settings) as Array<keyof SettingsState>;
+        let success = true;
+
+        for (const key of keys) {
+            const res = await updateSetting(key, settings[key]);
+            if (!res) success = false;
+        }
+
+        setIsSaving(false);
+        if (success) {
+            alert('Settings saved successfully!');
+        } else {
+            alert('Failed to save some settings.');
+        }
     };
+
+    if (isLoading) {
+        return <div className={styles.adminContainer}><p style={{ padding: '2rem' }}>Loading settings...</p></div>;
+    }
 
     return (
         <div className={styles.adminContainer}>
@@ -50,7 +101,6 @@ export default function AdminSettings() {
                     <Link href="/admin/submissions" className={styles.navItem}>
                         <span className={styles.navIcon}>📝</span>
                         Submissions
-                        <span className={styles.badge}>12</span>
                     </Link>
                     <Link href="/admin/users" className={styles.navItem}>
                         <span className={styles.navIcon}>👥</span>
@@ -90,14 +140,43 @@ export default function AdminSettings() {
                                 rows={3}
                             />
                         </div>
+                    </div>
+
+                    {/* Contact Settings */}
+                    <div className={pageStyles.settingsSection}>
+                        <h2 className={pageStyles.sectionTitle}>Contact Settings</h2>
                         <div className={pageStyles.formGroup}>
-                            <label>Contact Email</label>
+                            <label>Default Contact Email</label>
                             <input
                                 type="email"
                                 value={settings.contactEmail}
                                 onChange={(e) => setSettings({ ...settings, contactEmail: e.target.value })}
                                 className={pageStyles.input}
                             />
+                        </div>
+                        <div className={pageStyles.formGroup}>
+                            <label>Media Kit Contact Email</label>
+                            <input
+                                type="email"
+                                value={settings.mediaKitContactEmail}
+                                onChange={(e) => setSettings({ ...settings, mediaKitContactEmail: e.target.value })}
+                                className={pageStyles.input}
+                            />
+                            <p className={pageStyles.fieldHint}>Specific email for partnership inquiries from the media kit page.</p>
+                        </div>
+                        <div className={pageStyles.toggleItem}>
+                            <div>
+                                <h3>Show Email in Media Kit</h3>
+                                <p>Whether to display the email address publicly or just the contact form</p>
+                            </div>
+                            <label className={pageStyles.toggle}>
+                                <input
+                                    type="checkbox"
+                                    checked={settings.showMediaKitEmailAddress}
+                                    onChange={(e) => setSettings({ ...settings, showMediaKitEmailAddress: e.target.checked })}
+                                />
+                                <span className={pageStyles.toggleSlider}></span>
+                            </label>
                         </div>
                     </div>
 
@@ -142,20 +221,6 @@ export default function AdminSettings() {
                                     <span className={pageStyles.toggleSlider}></span>
                                 </label>
                             </div>
-                            <div className={pageStyles.toggleItem}>
-                                <div>
-                                    <h3>Email Verification Required</h3>
-                                    <p>Require email verification for new submissions</p>
-                                </div>
-                                <label className={pageStyles.toggle}>
-                                    <input
-                                        type="checkbox"
-                                        checked={settings.requireEmailVerification}
-                                        onChange={(e) => setSettings({ ...settings, requireEmailVerification: e.target.checked })}
-                                    />
-                                    <span className={pageStyles.toggleSlider}></span>
-                                </label>
-                            </div>
                         </div>
                     </div>
 
@@ -184,8 +249,12 @@ export default function AdminSettings() {
 
                     {/* Save Button */}
                     <div className={pageStyles.saveSection}>
-                        <button onClick={handleSave} className={pageStyles.saveBtn}>
-                            Save Changes
+                        <button
+                            onClick={handleSave}
+                            className={pageStyles.saveBtn}
+                            disabled={isSaving}
+                        >
+                            {isSaving ? 'Saving...' : 'Save Changes'}
                         </button>
                     </div>
                 </div>

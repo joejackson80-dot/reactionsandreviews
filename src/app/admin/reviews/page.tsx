@@ -2,29 +2,14 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useReviews } from '@/context/ReviewContext';
+import { useToast } from '@/components/ui/ToastContext';
 import styles from '../admin.module.css';
 import pageStyles from './reviews.module.css';
 
-interface Review {
-    id: number;
-    title: string;
-    category: string;
-    reviewer: string;
-    rating: number;
-    views: string;
-    status: 'published' | 'draft' | 'archived';
-    publishDate: string;
-}
-
 export default function AdminReviews() {
-    const [reviews, setReviews] = useState<Review[]>([
-        { id: 1, title: 'The Red Thread - Cinematic Review', category: 'Movies', reviewer: 'Cinema Critic', rating: 5, views: '125K', status: 'published', publishDate: '2026-01-28' },
-        { id: 2, title: 'Future Tech: Unboxing & Deep Dive', category: 'Tech', reviewer: 'Tech Insider', rating: 4, views: '89K', status: 'published', publishDate: '2026-02-01' },
-        { id: 3, title: 'Latest Gaming Tech Review', category: 'Games', reviewer: 'GameMaster Pro', rating: 5, views: '203K', status: 'published', publishDate: '2026-01-30' },
-        { id: 4, title: 'Premium Sound Quality Test', category: 'Music', reviewer: 'Audio Expert', rating: 5, views: '67K', status: 'published', publishDate: '2026-01-29' },
-        { id: 5, title: 'Luxury Product Unboxing', category: 'Products', reviewer: 'Luxury Reviewer', rating: 4, views: '145K', status: 'published', publishDate: '2026-01-27' },
-        { id: 6, title: 'Draft: Upcoming Movie Review', category: 'Movies', reviewer: 'Cinema Critic', rating: 4, views: '0', status: 'draft', publishDate: '2026-02-03' },
-    ]);
+    const { reviews, deleteReview } = useReviews();
+    const { addToast } = useToast();
 
     const [filterStatus, setFilterStatus] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState('');
@@ -36,16 +21,22 @@ export default function AdminReviews() {
         return matchesStatus && matchesSearch;
     });
 
-    const handleDelete = (id: number) => {
+    const handleDelete = async (id: string) => {
         if (confirm('Are you sure you want to delete this review?')) {
-            setReviews(reviews.filter(r => r.id !== id));
+            await deleteReview(id);
+            addToast({
+                type: 'info',
+                title: 'Review Deleted',
+                message: 'The review has been removed from the database.',
+            });
         }
     };
 
     const getStatusBadgeClass = (status: string) => {
         switch (status) {
             case 'published': return pageStyles.statusPublished;
-            case 'draft': return pageStyles.statusDraft;
+            case 'pending': return pageStyles.statusDraft;
+            case 'rejected': return pageStyles.statusArchived;
             case 'archived': return pageStyles.statusArchived;
             default: return '';
         }
@@ -126,10 +117,10 @@ export default function AdminReviews() {
                                 Published ({reviews.filter(r => r.status === 'published').length})
                             </button>
                             <button
-                                className={filterStatus === 'draft' ? pageStyles.filterBtnActive : pageStyles.filterBtn}
-                                onClick={() => setFilterStatus('draft')}
+                                className={filterStatus === 'pending' ? pageStyles.filterBtnActive : pageStyles.filterBtn}
+                                onClick={() => setFilterStatus('pending')}
                             >
-                                Drafts ({reviews.filter(r => r.status === 'draft').length})
+                                Pending ({reviews.filter(r => r.status === 'pending').length})
                             </button>
                         </div>
                     </div>

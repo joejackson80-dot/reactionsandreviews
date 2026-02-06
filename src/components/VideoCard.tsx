@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { CATEGORY_CONFIG } from '@/lib/constants';
 import styles from './VideoCard.module.css';
 
 interface VideoCardProps {
@@ -24,14 +25,12 @@ export default function VideoCard({
     reviewer
 }: VideoCardProps) {
     const getCategoryColor = (cat: string) => {
-        const colors: Record<string, string> = {
-            'Movies': '#DC2626',
-            'Tech': '#2563EB',
-            'Games': '#7C3AED',
-            'Music': '#059669',
-            'Products': '#D97706'
-        };
-        return colors[cat] || '#94A3B8';
+        // Find by name match (case-insensitive) or slug
+        const configItem = Object.values(CATEGORY_CONFIG).find(
+            config => config.name.toLowerCase() === cat.toLowerCase()
+        ) || CATEGORY_CONFIG[cat.toLowerCase()];
+
+        return configItem?.color || '#94A3B8';
     };
 
     const renderStars = (rating: number) => {

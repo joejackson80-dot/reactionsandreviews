@@ -2,46 +2,38 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useReviews } from '@/context/ReviewContext';
+import { useToast } from '@/components/ui/ToastContext';
 import styles from '../admin.module.css';
 import pageStyles from '../reviews/reviews.module.css';
 
-interface Submission {
-    id: number;
-    title: string;
-    category: string;
-    reviewer: string;
-    email: string;
-    videoUrl: string;
-    submittedDate: string;
-    status: 'pending' | 'approved' | 'rejected';
-}
-
 export default function AdminSubmissions() {
-    const [submissions, setSubmissions] = useState<Submission[]>([
-        { id: 1, title: 'New Tech Review - Smartphone X', category: 'Tech', reviewer: 'John Doe', email: 'john@example.com', videoUrl: 'https://youtube.com/...', submittedDate: '2026-02-02', status: 'pending' },
-        { id: 2, title: 'Movie Analysis - Action Film 2026', category: 'Movies', reviewer: 'Jane Smith', email: 'jane@example.com', videoUrl: 'https://youtube.com/...', submittedDate: '2026-02-02', status: 'pending' },
-        { id: 3, title: 'Gaming Review - RPG Adventure', category: 'Games', reviewer: 'Mike Johnson', email: 'mike@example.com', videoUrl: 'https://youtube.com/...', submittedDate: '2026-02-01', status: 'pending' },
-        { id: 4, title: 'Music Album Review', category: 'Music', reviewer: 'Sarah Wilson', email: 'sarah@example.com', videoUrl: 'https://youtube.com/...', submittedDate: '2026-02-01', status: 'approved' },
-        { id: 5, title: 'Product Unboxing Video', category: 'Products', reviewer: 'Tom Brown', email: 'tom@example.com', videoUrl: 'https://youtube.com/...', submittedDate: '2026-01-31', status: 'rejected' },
-    ]);
+    const { reviews, approveReview, rejectReview } = useReviews();
+    const { addToast } = useToast();
 
     const [filterStatus, setFilterStatus] = useState<string>('pending');
 
-    const filteredSubmissions = submissions.filter(sub =>
+    const filteredSubmissions = reviews.filter(sub =>
         filterStatus === 'all' || sub.status === filterStatus
     );
 
-    const handleApprove = (id: number) => {
-        setSubmissions(submissions.map(sub =>
-            sub.id === id ? { ...sub, status: 'approved' } : sub
-        ));
+    const handleApprove = async (id: string) => {
+        await approveReview(id);
+        addToast({
+            type: 'success',
+            title: 'Review Approved',
+            message: 'The review has been published successfully.',
+        });
     };
 
-    const handleReject = (id: number) => {
+    const handleReject = async (id: string) => {
         if (confirm('Are you sure you want to reject this submission?')) {
-            setSubmissions(submissions.map(sub =>
-                sub.id === id ? { ...sub, status: 'rejected' } : sub
-            ));
+            await rejectReview(id);
+            addToast({
+                type: 'info',
+                title: 'Review Rejected',
+                message: 'The submission has been rejected.',
+            });
         }
     };
 
@@ -83,7 +75,7 @@ export default function AdminSubmissions() {
                     <Link href="/admin/submissions" className={styles.navItemActive}>
                         <span className={styles.navIcon}>📝</span>
                         Submissions
-                        <span className={styles.badge}>{submissions.filter(s => s.status === 'pending').length}</span>
+                        <span className={styles.badge}>{reviews.filter(r => r.status === 'pending').length}</span>
                     </Link>
                     <Link href="/admin/users" className={styles.navItem}>
                         <span className={styles.navIcon}>👥</span>
@@ -107,25 +99,25 @@ export default function AdminSubmissions() {
                             className={filterStatus === 'pending' ? pageStyles.filterBtnActive : pageStyles.filterBtn}
                             onClick={() => setFilterStatus('pending')}
                         >
-                            Pending ({submissions.filter(s => s.status === 'pending').length})
+                            Pending ({reviews.filter(r => r.status === 'pending').length})
                         </button>
                         <button
                             className={filterStatus === 'approved' ? pageStyles.filterBtnActive : pageStyles.filterBtn}
                             onClick={() => setFilterStatus('approved')}
                         >
-                            Approved ({submissions.filter(s => s.status === 'approved').length})
+                            Approved ({reviews.filter(r => r.status === 'published').length})
                         </button>
                         <button
                             className={filterStatus === 'rejected' ? pageStyles.filterBtnActive : pageStyles.filterBtn}
                             onClick={() => setFilterStatus('rejected')}
                         >
-                            Rejected ({submissions.filter(s => s.status === 'rejected').length})
+                            Rejected ({reviews.filter(r => r.status === 'rejected').length})
                         </button>
                         <button
                             className={filterStatus === 'all' ? pageStyles.filterBtnActive : pageStyles.filterBtn}
                             onClick={() => setFilterStatus('all')}
                         >
-                            All ({submissions.length})
+                            All ({reviews.length})
                         </button>
                     </div>
                 </div>
@@ -151,8 +143,8 @@ export default function AdminSubmissions() {
                                         <span className={pageStyles.categoryBadge}>{submission.category}</span>
                                     </td>
                                     <td>{submission.reviewer}</td>
-                                    <td>{submission.email}</td>
-                                    <td>{submission.submittedDate}</td>
+                                    <td>{submission.reviewerEmail}</td>
+                                    <td>{submission.publishDate}</td>
                                     <td>
                                         <span className={`${pageStyles.statusBadge} ${getStatusBadgeClass(submission.status)}`}>
                                             {submission.status}

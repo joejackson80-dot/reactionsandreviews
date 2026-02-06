@@ -27,26 +27,26 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
 
     // Actually, page.tsx fetches raw DB rows. We need to map it to our Review interface.
     const mapDbReview = (r: unknown): Review => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const d = r as Record<string, any>;
+        const d = r as Record<string, unknown>;
         return {
-            id: d.id,
-            title: d.title,
-            category: d.category,
-            thumbnail: d.thumbnail,
-            rating: d.rating,
-            views: d.views,
-            duration: d.duration,
-            reviewer: d.reviewer,
-            publishDate: d.publish_date,
-            description: d.description,
-            videoEmbed: d.video_embed,
-            videoUrl: d.video_url,
-            status: d.status,
-            likes: d.likes || 0,
-            articleContent: d.article_content,
-            affiliateLink: d.affiliate_link,
-            tags: d.tags || []
+            id: d.id as string,
+            title: d.title as string,
+            category: d.category as string,
+            thumbnail: d.thumbnail as string,
+            rating: d.rating as number,
+            views: d.views as string,
+            duration: d.duration as string,
+            reviewer: d.reviewer as string,
+            publishDate: d.publish_date as string,
+            description: d.description as string,
+            videoEmbed: d.video_embed as string | undefined,
+            videoUrl: d.video_url as string | undefined,
+            status: d.status as 'published' | 'pending' | 'rejected',
+            likes: (d.likes as number) || 0,
+            articleContent: d.article_content as string | undefined,
+            affiliateLink: d.affiliate_link as string | undefined,
+            reviewerEmail: d.reviewer_email as string | undefined,
+            tags: (d.tags as string[]) || []
         };
     };
 

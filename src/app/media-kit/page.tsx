@@ -1,11 +1,58 @@
 'use client';
 
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { getSetting } from '@/lib/settings';
 import styles from './media-kit.module.css';
 
 export default function MediaKit() {
+    const [contactEmail, setContactEmail] = useState('joejackson80@gmail.com');
+    const [showEmailAddress, setShowEmailAddress] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        company: '',
+        message: '',
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    useEffect(() => {
+        async function loadSettings() {
+            const email = await getSetting('media_kit_contact_email', 'joejackson80@gmail.com');
+            const show = await getSetting('showMediaKitEmailAddress', false);
+            setContactEmail(email);
+            setShowEmailAddress(show);
+        }
+        loadSettings();
+    }, []);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        try {
+            // In a real app, this would call an API route that sends an email to contactEmail
+            console.log(`Sending partnership request to ${contactEmail}`);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            setSubmitStatus('success');
+            setFormData({ name: '', email: '', company: '', message: '' });
+        } catch {
+            setSubmitStatus('error');
+        } finally {
+            setIsSubmitting(false);
+            setTimeout(() => setSubmitStatus('idle'), 5000);
+        }
+    };
+
     return (
         <main className={styles.main}>
             <Navigation />
@@ -35,7 +82,6 @@ export default function MediaKit() {
                             <span className={styles.statValue}>50K+</span>
                             <span className={styles.statLabel}>Monthly Views</span>
                         </div>
-                        <div className={styles.statValue} style={{ display: 'none' }}>4.8</div>
                         <div className={styles.statCard}>
                             <span className={styles.statValue}>4.8★</span>
                             <span className={styles.statLabel}>Audience trust</span>
@@ -115,16 +161,87 @@ export default function MediaKit() {
                 </div>
             </section>
 
-            {/* Slide 5: Call to Action */}
+            {/* Slide 5: Call to Action / Contact Form */}
             <section className={styles.ctaSection}>
                 <div className={styles.container}>
                     <h2 className={styles.ctaTitle}>Let&apos;s Build Your Brand.</h2>
                     <p className={styles.ctaSubtitle}>
-                        Direct bookings for Q3/Q4 are now open. Secure your placement and reach your target audience today.
+                        Direct bookings for Q3/Q4 are now open. Secure your placement today.
+                        {showEmailAddress && (
+                            <span className={styles.directEmail}>
+                                <br />Or contact directly: <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                            </span>
+                        )}
                     </p>
-                    <Link href="/contact" className={styles.ctaBtn}>
-                        Start Partnership Discussion
-                    </Link>
+
+                    <div className={styles.contactFormContainer}>
+                        <form onSubmit={handleSubmit} className={styles.partnershipForm}>
+                            <div className={styles.formRow}>
+                                <div className={styles.formGroup}>
+                                    <label>Name</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Your Name"
+                                    />
+                                </div>
+                                <div className={styles.formGroup}>
+                                    <label>Company</label>
+                                    <input
+                                        type="text"
+                                        name="company"
+                                        value={formData.company}
+                                        onChange={handleChange}
+                                        required
+                                        placeholder="Company Name"
+                                    />
+                                </div>
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Work Email</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="email@company.com"
+                                />
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Project Details</label>
+                                <textarea
+                                    name="message"
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Tell us about your brand and what you're looking for..."
+                                    rows={4}
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className={styles.ctaBtn}
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? 'Sending Request...' : 'Send Partnership Request'}
+                            </button>
+
+                            {submitStatus === 'success' && (
+                                <p className={styles.successMessage}>
+                                    Request sent! We&apos;ll be in touch at your work email shortly.
+                                </p>
+                            )}
+                            {submitStatus === 'error' && (
+                                <p className={styles.errorMessage}>
+                                    Something went wrong. Please try again or contact us directly.
+                                </p>
+                            )}
+                        </form>
+                    </div>
                 </div>
             </section>
 

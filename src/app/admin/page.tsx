@@ -75,13 +75,16 @@ export default function AdminDashboard() {
         });
     };
 
+    const totalRating = publishedReviews.reduce((acc, r) => acc + r.rating, 0);
+    const avgRating = publishedReviews.length > 0 ? (totalRating / publishedReviews.length).toFixed(1) : '0.0';
+
     const stats = {
         totalReviews: reviews.length,
         pendingReviews: pendingReviews.length,
-        totalUsers: 1234, // Mock
-        totalViews: 5234567, // Mock
-        avgRating: 4.8, // Mock
-        monthlyGrowth: 23, // Mock
+        totalUsers: 142, // Adjusted mock to be more realistic
+        totalViews: 45200, // Adjusted mock
+        avgRating,
+        monthlyGrowth: 15, // Mock
     };
 
     const recentSubmissions = pendingReviews.slice(0, 5); // Show top 5 pending

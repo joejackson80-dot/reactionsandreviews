@@ -22,6 +22,7 @@ export interface Review {
     articleContent?: string; // For transcribed written reviews
     tags?: string[];
     affiliateLink?: string;
+    reviewerEmail?: string;
 }
 
 export interface Comment {
@@ -110,6 +111,7 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
                 video_url: reviewData.videoUrl,
                 article_content: reviewData.articleContent,
                 affiliate_link: reviewData.affiliateLink,
+                reviewer_email: reviewData.reviewerEmail,
                 status: 'pending'
             }])
             .select();
@@ -136,6 +138,7 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
                 videoUrl: newReview.video_url,
                 articleContent: newReview.article_content,
                 affiliateLink: newReview.affiliate_link,
+                reviewerEmail: newReview.reviewer_email,
                 status: newReview.status
             };
             setReviews(prev => [mappedReview, ...prev]);
@@ -177,6 +180,7 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
         if (updates.videoEmbed) dbUpdates.video_embed = updates.videoEmbed;
         if (updates.articleContent !== undefined) dbUpdates.article_content = updates.articleContent;
         if (updates.affiliateLink !== undefined) dbUpdates.affiliate_link = updates.affiliateLink;
+        if (updates.reviewerEmail !== undefined) dbUpdates.reviewer_email = updates.reviewerEmail;
         if (updates.tags) dbUpdates.tags = updates.tags;
         if (updates.reviewer) dbUpdates.reviewer = updates.reviewer;
         if (updates.status) dbUpdates.status = updates.status;

@@ -146,12 +146,12 @@
 
 .badge {
     margin-left: auto;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.625rem;
     background: var(--color-crimson);
-    color: #4CAF50;
+    color: white;
     border-radius: 12px;
     font-size: 0.75rem;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 /* Modal Styles */

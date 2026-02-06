@@ -51,6 +51,7 @@ export default function SubmitPage() {
             videoUrl: formData.videoUrl,
             articleContent: formData.articleContent,
             affiliateLink: formData.affiliateLink,
+            reviewerEmail: formData.email,
         });
 
         // Trigger Confetti
