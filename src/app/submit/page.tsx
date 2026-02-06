@@ -6,6 +6,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useReviews } from '@/context/ReviewContext';
 import { useToast } from '@/components/ui/ToastContext';
+import { CATEGORY_CONFIG } from '@/lib/constants';
 import styles from './submit.module.css';
 
 export default function SubmitPage() {
@@ -138,11 +139,11 @@ export default function SubmitPage() {
                                         required
                                     >
                                         <option value="">Select a category</option>
-                                        <option value="Movies">Movies 🎥</option>
-                                        <option value="Books">Books �</option>
-                                        <option value="Music">Music �</option>
-                                        <option value="Trending Content">Trending Content 🔥</option>
-                                        <option value="Products">Products 📦</option>
+                                        {Object.entries(CATEGORY_CONFIG).map(([id, category]) => (
+                                            <option key={id} value={category.name}>
+                                                {category.name} {category.icon}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>

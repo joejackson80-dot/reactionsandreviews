@@ -14,15 +14,19 @@ interface Category {
     description: string;
 }
 
+import { CATEGORY_CONFIG } from '@/lib/constants';
+
 export default function AdminCategories() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [categories, setCategories] = useState<Category[]>([
-        { id: 'movies', name: 'Movies', icon: '🎥', reviewCount: 156, color: '#DC2626', description: 'Film reviews and cinema analysis' },
-        { id: 'tech', name: 'Tech', icon: '💻', reviewCount: 203, color: '#2563EB', description: 'Technology reviews and unboxings' },
-        { id: 'games', name: 'Games', icon: '🎮', reviewCount: 189, color: '#7C3AED', description: 'Gaming reviews and walkthroughs' },
-        { id: 'music', name: 'Music', icon: '🎵', reviewCount: 134, color: '#059669', description: 'Music and audio reviews' },
-        { id: 'products', name: 'Products', icon: '📦', reviewCount: 178, color: '#D97706', description: 'Product reviews and demonstrations' },
-    ]);
+    const [categories] = useState<Category[]>(
+        Object.entries(CATEGORY_CONFIG).map(([id, config]) => ({
+            id,
+            name: config.name,
+            icon: config.icon,
+            color: config.color,
+            description: config.description,
+            reviewCount: 150 // Static mock count to ensure purity
+        }))
+    );
 
     return (
         <div className={styles.adminContainer}>

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { CATEGORY_CONFIG } from '@/lib/constants';
 import styles from './about.module.css';
 
 export default function AboutPage() {
@@ -51,55 +52,15 @@ export default function AboutPage() {
                         <div className={styles.textBlock}>
                             <h2>What We Offer</h2>
                             <div className={styles.featuresList}>
-                                <div className={styles.feature}>
-                                    <span className={styles.featureIcon}>🎥</span>
-                                    <div>
-                                        <h3>Movie Reviews</h3>
-                                        <p>In-depth film analysis and honest reactions to the latest releases</p>
+                                {Object.entries(CATEGORY_CONFIG).map(([id, category]) => (
+                                    <div key={id} className={styles.feature}>
+                                        <span className={styles.featureIcon}>{category.icon}</span>
+                                        <div>
+                                            <h3>{category.name}</h3>
+                                            <p>{category.description}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className={styles.feature}>
-                                    <span className={styles.featureIcon}>💻</span>
-                                    <div>
-                                        <h3>Tech Unboxings</h3>
-                                        <p>Comprehensive gadget reviews and technology comparisons</p>
-                                    </div>
-                                </div>
-                                <div className={styles.feature}>
-                                    <span className={styles.featureIcon}>🎮</span>
-                                    <div>
-                                        <h3>Gaming Content</h3>
-                                        <p>Game reviews, walkthroughs, and gameplay reactions</p>
-                                    </div>
-                                </div>
-                                <div className={styles.feature}>
-                                    <span className={styles.featureIcon}>🎵</span>
-                                    <div>
-                                        <h3>Music Reviews</h3>
-                                        <p>Album reviews and audio equipment testing</p>
-                                    </div>
-                                </div>
-                                <div className={styles.feature}>
-                                    <span className={styles.featureIcon}>📦</span>
-                                    <div>
-                                        <h3>Product Testing</h3>
-                                        <p>Honest consumer product reviews and detailed demonstrations</p>
-                                    </div>
-                                </div>
-                                <div className={styles.feature}>
-                                    <span className={styles.featureIcon}>🍸</span>
-                                    <div>
-                                        <h3>Dining & Nightlife</h3>
-                                        <p>Reviews of the world&apos;s best restaurants, bars, and clubs</p>
-                                    </div>
-                                </div>
-                                <div className={styles.feature}>
-                                    <span className={styles.featureIcon}>✈️</span>
-                                    <div>
-                                        <h3>Travel & Leisure</h3>
-                                        <p>Exclusive tours of resorts, hotels, and vacation destinations</p>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
 
