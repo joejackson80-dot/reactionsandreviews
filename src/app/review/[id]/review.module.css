@@ -369,11 +369,17 @@
 
 @media (max-width: 768px) {
     .reviewHero {
-        padding: 6rem 0 2rem;
+        padding: 5rem 0 1.5rem;
+    }
+
+    .reviewTitle {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
     }
 
     .reviewMeta {
-        gap: 1rem;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
     }
 
     .relatedGrid {

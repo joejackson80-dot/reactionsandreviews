@@ -13,7 +13,7 @@ export default function Hero() {
                 <h1 className={styles.heroTitle}>
                     Honest <span className={styles.highlight}>Reactions</span>
                     <br />
-                    Unfiltered <span className={styles.highlightGold} style={{ whiteSpace: 'nowrap' }}>Reviews</span>
+                    Unfiltered <span className={styles.highlightGold}>Reviews</span>
                 </h1>
                 <p className={styles.heroSubtitle}>
                     Watch in-depth video reactions and reviews of movies, tech, games, music, and products.

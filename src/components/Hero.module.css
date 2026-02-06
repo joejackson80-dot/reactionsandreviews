@@ -111,16 +111,13 @@
 /* Title */
 .heroTitle {
     font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    font-size: clamp(1.8rem, 8vw, 5.5rem);
     font-weight: 900;
-    line-height: 1.05;
+    line-height: 1.1;
     margin-bottom: 1.5rem;
     color: var(--color-light-silver);
     text-transform: uppercase;
     letter-spacing: -0.01em;
-    hyphens: none;
-    -webkit-hyphens: none;
-    -ms-hyphens: none;
 }
 
 .highlight {
@@ -448,8 +445,10 @@
     }
 
     .statsGrid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.5rem;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        max-width: 250px;
+        margin: 0 auto;
     }
 
     .statCard {

@@ -328,21 +328,21 @@
 
 @media (max-width: 480px) {
   .container {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0.5rem;
   }
 
   .logo {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
 
   .brandName {
-    font-size: 0.65rem;
-    gap: 0.15rem;
+    font-size: 0.6rem;
+    gap: 0.1rem;
   }
 
   .brandAnd {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 
   .brandPrimary,
