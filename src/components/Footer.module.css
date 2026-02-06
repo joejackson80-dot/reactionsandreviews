@@ -43,6 +43,8 @@
     font-weight: 700;
     font-size: 1.125rem;
     letter-spacing: 0.05em;
+    padding: 0 0.25rem;
+    /* prevent clipping */
 }
 
 .brandName {
@@ -180,6 +182,12 @@
 
     .brandSection {
         grid-column: 1 / -1;
+    }
+
+    .brandText {
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }
 
