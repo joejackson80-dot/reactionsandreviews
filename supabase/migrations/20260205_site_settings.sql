@@ -6,6 +6,9 @@ CREATE TABLE IF NOT EXISTS site_settings (
 );
 -- Enable RLS
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+-- Drop existing policies if they exist (for re-runs)
+DROP POLICY IF EXISTS "Site settings are viewable by everyone" ON site_settings;
+DROP POLICY IF EXISTS "Full access to settings for everyone" ON site_settings;
 -- Public read access
 CREATE POLICY "Site settings are viewable by everyone" ON site_settings FOR
 SELECT USING (true);

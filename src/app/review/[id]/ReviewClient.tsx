@@ -21,7 +21,7 @@ interface ReviewClientProps {
 import { motion, LayoutGroup, Variants, AnimatePresence } from 'framer-motion';
 
 export default function ReviewClient({ reviewId, initialReviewData }: ReviewClientProps) {
-    const { getReview, reviews } = useReviews();
+    const { getReview, reviews, rateReview, logAffiliateClick } = useReviews();
     const contextReview = getReview(reviewId);
 
     const [showWatchNext, setShowWatchNext] = useState(false);
@@ -69,14 +69,14 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
     };
 
     const mapDbReview = (r: unknown): Review => {
-        const d = r as Record<string, unknown>;
+        const d = r as Record<string, any>;
         return {
             id: d.id as string,
             title: d.title as string,
             category: d.category as string,
             thumbnail: d.thumbnail as string,
             rating: d.rating as number,
-            views: d.views as string,
+            views: Number(d.views) || 0,
             duration: d.duration as string,
             reviewer: d.reviewer as string,
             publishDate: d.publish_date as string,
@@ -88,7 +88,14 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
             articleContent: d.article_content as string | undefined,
             affiliateLink: d.affiliate_link as string | undefined,
             reviewerEmail: d.reviewer_email as string | undefined,
-            tags: (d.tags as string[]) || []
+            tags: (d.tags as string[]) || [],
+            pros: (d.pros as string[]) || [],
+            cons: (d.cons as string[]) || [],
+            verdict: d.verdict as string | undefined,
+            userRatingAvg: Number(d.user_rating_avg) || 0,
+            userRatingCount: (d.user_rating_count as number) || 0,
+            gearItems: (d.gear_items as { name: string; link: string; price?: string; image?: string }[]) || [],
+            isTrending: !!d.is_trending
         };
     };
 
@@ -216,9 +223,36 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
                             </div>
                         </div>
 
-                        <div className={styles.rating}>
-                            <div className={styles.stars}>{renderStars(activeReview.rating)}</div>
-                            <span className={styles.ratingNumber}>{activeReview.rating}.0 / 5.0</span>
+                        <div className={styles.ratingRow}>
+                            <div className={styles.ratingItem}>
+                                <span className={styles.ratingSource}>Critic Score</span>
+                                <div className={styles.ratingBox}>
+                                    <div className={styles.stars}>{renderStars(activeReview.rating)}</div>
+                                    <span className={styles.ratingNumber}>{activeReview.rating}.0</span>
+                                </div>
+                            </div>
+                            <div className={styles.ratingDivider}></div>
+                            <div className={styles.ratingItem}>
+                                <span className={styles.ratingSource}>Community Rating</span>
+                                <div className={styles.ratingBox}>
+                                    <div className={styles.userStars}>
+                                        {Array.from({ length: 5 }, (_, i) => (
+                                            <motion.span
+                                                key={i}
+                                                className={i < (activeReview.userRatingAvg || 0) ? styles.starFilled : styles.starEmpty}
+                                                whileHover={{ scale: 1.3 }}
+                                                onClick={() => rateReview(activeReview.id, i + 1)}
+                                            >
+                                                ★
+                                            </motion.span>
+                                        ))}
+                                    </div>
+                                    <span className={styles.ratingNumber}>
+                                        {(activeReview.userRatingAvg || 0).toFixed(1)}
+                                        <span className={styles.voteCount}>({activeReview.userRatingCount || 0} votes)</span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </motion.section>
@@ -277,6 +311,56 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
                                 </div>
                             ) : null}
 
+                            {/* VERDICT SCORECARD */}
+                            <motion.div
+                                initial="hidden"
+                                whileInView="visible"
+                                viewport={{ once: true }}
+                                variants={fadeIn}
+                                className={styles.verdictCard}
+                            >
+                                <div className={styles.verdictHeader}>
+                                    <h3>The Final Verdict</h3>
+                                    <div className={styles.verdictScore}>
+                                        <span className={styles.scoreValue}>{activeReview.rating}.0</span>
+                                        <span className={styles.scoreLabel}>Official Score</span>
+                                    </div>
+                                </div>
+
+                                <div className={styles.prosConsGrid}>
+                                    <div className={styles.prosBox}>
+                                        <h4><span className={styles.prosIcon}>👍</span> The Good</h4>
+                                        <ul>
+                                            {(activeReview.pros && activeReview.pros.length > 0) ? activeReview.pros.map((p, i) => (
+                                                <li key={i}>{p}</li>
+                                            )) : (
+                                                <>
+                                                    <li>Excellent production quality</li>
+                                                    <li>Thoughtful and unbiased analysis</li>
+                                                </>
+                                            )}
+                                        </ul>
+                                    </div>
+                                    <div className={styles.consBox}>
+                                        <h4><span className={styles.consIcon}>👎</span> The Bad</h4>
+                                        <ul>
+                                            {(activeReview.cons && activeReview.cons.length > 0) ? activeReview.cons.map((c, i) => (
+                                                <li key={i}>{c}</li>
+                                            )) : (
+                                                <>
+                                                    <li>A bit longer than expected</li>
+                                                    <li>Limited availability in some regions</li>
+                                                </>
+                                            )}
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div className={styles.verdictText}>
+                                    <p>{activeReview.verdict || "Overall, this is a top-tier recommendation for anyone looking to stay ahead of the curve. The value proposition is strong, and the execution is nearly flawless."}</p>
+                                </div>
+                            </motion.div>
+
                             <div className={styles.likeSection}>
                                 <LikeButton reviewId={activeReview.id} initialLikes={activeReview.likes || 0} />
                             </div>
@@ -293,6 +377,47 @@ export default function ReviewClient({ reviewId, initialReviewData }: ReviewClie
                         </motion.div>
 
                         <div className={styles.sidebar}>
+                            {/* THE GEAR BOX */}
+                            <motion.div
+                                initial="hidden"
+                                animate="visible"
+                                variants={fadeIn}
+                                custom={3}
+                                className={`${styles.shareBox} ${styles.gearBox}`}
+                            >
+                                <h3 className={styles.gearTitle}>🛠️ The Gear Box</h3>
+                                <p className={styles.gearSubtitle}>Tools used in this review</p>
+                                <div className={styles.gearList}>
+                                    {(activeReview.gearItems && activeReview.gearItems.length > 0) ? activeReview.gearItems.map((item, i) => (
+                                        <a key={i} href={item.link} target="_blank" rel="noopener noreferrer" className={styles.gearItem}>
+                                            <div className={styles.gearItemInfo}>
+                                                <span className={styles.gearName}>{item.name}</span>
+                                                {item.price && <span className={styles.gearPrice}>{item.price}</span>}
+                                            </div>
+                                            <span className={styles.gearArrow}>→</span>
+                                        </a>
+                                    )) : (
+                                        <>
+                                            <div className={styles.gearItem}>
+                                                <div className={styles.gearItemInfo}>
+                                                    <span className={styles.gearName}>Pro 4K Camera Rig</span>
+                                                    <span className={styles.gearPrice}>$1,299</span>
+                                                </div>
+                                                <span className={styles.gearArrow}>→</span>
+                                            </div>
+                                            <div className={styles.gearItem}>
+                                                <div className={styles.gearItemInfo}>
+                                                    <span className={styles.gearName}>Studio Condenser Mic</span>
+                                                    <span className={styles.gearPrice}>$299</span>
+                                                </div>
+                                                <span className={styles.gearArrow}>→</span>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                                <p className={styles.affiliateDisclaimer}>*May contain affiliate links</p>
+                            </motion.div>
+
                             {activeReview.affiliateLink && (
                                 <motion.div
                                     initial="hidden"

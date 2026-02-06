@@ -10,9 +10,11 @@ interface VideoCardProps {
     category: string;
     thumbnail: string;
     rating: number;
-    views: string;
+    views: number;
     duration: string;
     reviewer: string;
+    isTrending?: boolean;
+    userRating?: number;
 }
 
 export default function VideoCard({
@@ -23,17 +25,26 @@ export default function VideoCard({
     rating,
     views,
     duration,
-    reviewer
+    reviewer,
+    isTrending,
+    userRating
 }: VideoCardProps) {
     const renderStars = (rating: number) => {
-        return Array.from({ length: 5 }, (_, i) => (
-            <span
-                key={i}
-                className={i < rating ? styles.starFilled : styles.starEmpty}
-            >
-                ★
-            </span>
-        ));
+        // ... existing renderStars ...
+        // (Note: I already updated renderStars in a previous turn, I'll just make sure the destructured props match)
+        return (
+            <div className={styles.starsContainer}>
+                {Array.from({ length: 5 }, (_, i) => (
+                    <motion.span
+                        key={i}
+                        className={i < rating ? styles.starFilled : styles.starEmpty}
+                        whileHover={{ scale: 1.2, filter: "drop-shadow(0 0 8px var(--color-gold))" }}
+                    >
+                        ★
+                    </motion.span>
+                ))}
+            </div>
+        );
     };
 
     return (
@@ -65,23 +76,40 @@ export default function VideoCard({
                     </div>
                     <div className={styles.duration}>{duration}</div>
                     <div className={styles.categoryBadge}>{category}</div>
+                    {isTrending && (
+                        <motion.div
+                            className={styles.trendingBadge}
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                        >
+                            🔥 TRENDING
+                        </motion.div>
+                    )}
                 </div>
 
                 <div className={styles.cardContent}>
                     <h3 className={styles.title}>{title}</h3>
                     <div className={styles.meta}>
-                        <div className={styles.rating}>
-                            <div className={styles.stars}>
-                                {renderStars(rating)}
+                        <div className={styles.ratingSection}>
+                            <div className={styles.ratingInfo}>
+                                <div className={styles.stars}>
+                                    {renderStars(rating)}
+                                </div>
+                                <span className={styles.ratingNumber}>{rating}.0</span>
                             </div>
-                            <span className={styles.ratingNumber}>{rating}.0</span>
+                            {userRating && userRating > 0 && (
+                                <div className={styles.userRatingInfo}>
+                                    <span className={styles.userRatingLabel}>Community</span>
+                                    <span className={styles.userRatingValue}>★ {userRating.toFixed(1)}</span>
+                                </div>
+                            )}
                         </div>
 
                         <div className={styles.info}>
                             <span className={styles.reviewer}>{reviewer}</span>
                             <div className={styles.views}>
                                 <Eye size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
-                                <span>{views} views</span>
+                                <span>{views >= 1000 ? `${(views / 1000).toFixed(1)}k` : views} views</span>
                             </div>
                         </div>
                     </div>

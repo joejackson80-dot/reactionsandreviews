@@ -57,12 +57,7 @@ function ReviewsContent() {
     // Client-side sort of the current display set
     const sortedVideos = [...displayReviews].sort((a, b) => {
         if (sortBy === 'views') {
-            const getViewsValue = (viewStr: string) => {
-                const multiplier = viewStr.toUpperCase().includes('M') ? 1000000 : viewStr.toUpperCase().includes('K') ? 1000 : 1;
-                const num = parseFloat(viewStr.replace(/[^0-9.]/g, '')) || 0;
-                return num * multiplier;
-            };
-            return getViewsValue(b.views) - getViewsValue(a.views);
+            return b.views - a.views;
         } else if (sortBy === 'rating') {
             return b.rating - a.rating;
         } else if (sortBy === 'latest') {

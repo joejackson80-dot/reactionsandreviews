@@ -20,6 +20,9 @@
     -webkit-mask:
         linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
@@ -163,9 +166,11 @@
     gap: 0.5rem;
 }
 
-.stars {
+.stars,
+.starsContainer {
     display: flex;
     gap: 0.1rem;
+    cursor: default;
 }
 
 .starFilled {
@@ -185,6 +190,55 @@
     font-weight: 700;
     color: var(--color-gold);
     margin-left: 0.25rem;
+}
+
+.trendingBadge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--color-crimson);
+    color: white;
+    font-family: var(--font-accent);
+    font-size: 0.7rem;
+    font-weight: 800;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4);
+    z-index: 2;
+    letter-spacing: 0.05em;
+}
+
+.ratingSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.ratingInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.userRatingInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.userRatingLabel {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--color-silver);
+    opacity: 0.6;
+}
+
+.userRatingValue {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-platinum);
+    font-family: var(--font-heading);
 }
 
 .info {

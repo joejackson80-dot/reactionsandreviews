@@ -642,3 +642,256 @@
         width: 100px;
     }
 }
+
+/* RATING DUAL SYSTEM */
+.ratingRow {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ratingItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ratingSource {
+    font-family: var(--font-accent);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--color-silver);
+    letter-spacing: 0.1em;
+}
+
+.ratingBox {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ratingDivider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.userStars {
+    display: flex;
+    gap: 0.2rem;
+    cursor: pointer;
+}
+
+.voteCount {
+    font-size: 0.75rem;
+    color: var(--color-silver);
+    opacity: 0.7;
+    margin-left: 0.5rem;
+    font-weight: 400;
+}
+
+/* VERDICT CARD */
+.verdictCard {
+    margin: 4rem 0;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.6) 0%, rgba(10, 10, 10, 0.8) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: var(--border-radius-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.verdictCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-brand);
+}
+
+.verdictHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.verdictScore {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--color-black);
+    border: 2px solid var(--color-gold);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+.scoreValue {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--color-gold);
+    line-height: 1;
+}
+
+.scoreLabel {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-silver);
+    margin-top: 0.25rem;
+}
+
+.prosConsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.prosBox h4,
+.consBox h4 {
+    margin-bottom: 1.25rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.prosBox ul,
+.consBox ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.prosBox li,
+.consBox li {
+    font-size: 0.95rem;
+    color: var(--color-platinum);
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.prosBox li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #10B981;
+    font-weight: bold;
+}
+
+.consBox li::before {
+    content: '×';
+    position: absolute;
+    left: 0;
+    color: var(--color-crimson);
+    font-weight: bold;
+    font-size: 1.2rem;
+    top: -2px;
+}
+
+.verdictText {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-style: italic;
+    color: var(--color-silver);
+}
+
+/* GEAR BOX */
+.gearBox {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.gearTitle {
+    color: var(--color-gold) !important;
+}
+
+.gearSubtitle {
+    font-size: 0.8rem;
+    color: var(--color-silver);
+    opacity: 0.6;
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+}
+
+.gearList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.gearItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.gearItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-gold);
+    transform: translateX(5px);
+}
+
+.gearItemInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.gearName {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-light-silver);
+}
+
+.gearPrice {
+    font-size: 0.75rem;
+    color: var(--color-gold);
+    font-family: var(--font-accent);
+}
+
+.gearArrow {
+    color: var(--color-silver);
+    opacity: 0.5;
+}
+
+@media (max-width: 1024px) {
+    .ratingRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .ratingDivider {
+        width: 100%;
+        height: 1px;
+    }
+}
+
+@media (max-width: 768px) {
+    .prosConsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .verdictCard {
+        padding: 1.5rem;
+    }
+}

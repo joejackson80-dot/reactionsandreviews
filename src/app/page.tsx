@@ -80,7 +80,11 @@ export default function Home() {
             >
               {trendingVideos.map((video) => (
                 <motion.div key={video.id} variants={itemVariants}>
-                  <VideoCard {...video} />
+                  <VideoCard
+                    {...video}
+                    isTrending={true}
+                    userRating={video.userRatingAvg}
+                  />
                 </motion.div>
               ))}
             </motion.div>
@@ -117,7 +121,11 @@ export default function Home() {
           >
             {filteredVideos.map((video) => (
               <motion.div key={video.id} variants={itemVariants}>
-                <VideoCard {...video} />
+                <VideoCard
+                  {...video}
+                  userRating={video.userRatingAvg}
+                  isTrending={video.isTrending}
+                />
               </motion.div>
             ))}
           </motion.div>

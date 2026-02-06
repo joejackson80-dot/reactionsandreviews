@@ -10,19 +10,26 @@ export interface Review {
     category: string;
     thumbnail: string;
     rating: number;
-    views: string;
+    views: number;
     duration: string;
     reviewer: string;
     publishDate: string;
     description: string;
     videoEmbed?: string;
-    videoUrl?: string; // For submission tracking
+    videoUrl?: string;
     status: 'published' | 'pending' | 'rejected';
     likes?: number;
-    articleContent?: string; // For transcribed written reviews
+    articleContent?: string;
     tags?: string[];
     affiliateLink?: string;
     reviewerEmail?: string;
+    pros?: string[];
+    cons?: string[];
+    verdict?: string;
+    userRatingAvg?: number;
+    userRatingCount?: number;
+    gearItems?: { name: string; link: string; price?: string; image?: string }[];
+    isTrending?: boolean;
 }
 
 export interface Comment {
@@ -48,6 +55,8 @@ interface ReviewContextType {
     getComments: (reviewId: string) => Promise<Comment[]>;
     addComment: (reviewId: string, author: string, content: string) => Promise<void>;
     deleteComment: (commentId: string) => Promise<void>;
+    rateReview: (id: string, rating: number) => Promise<void>;
+    logAffiliateClick: (reviewId: string, itemName: string, destinationUrl: string) => Promise<void>;
     subscribeNewsletter: (email: string) => Promise<void>;
 }
 
@@ -73,18 +82,26 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
                     category: r.category,
                     thumbnail: r.thumbnail,
                     rating: r.rating,
-                    views: r.views,
+                    views: Number(r.views) || 0,
                     duration: r.duration,
                     reviewer: r.reviewer,
-                    publishDate: r.publish_date, // Map snake_case to camelCase
+                    publishDate: r.publish_date,
                     description: r.description,
-                    videoEmbed: r.video_embed,   // Map snake_case to camelCase
-                    videoUrl: r.video_url,       // Map snake_case to camelCase
+                    videoEmbed: r.video_embed,
+                    videoUrl: r.video_url,
                     status: r.status,
                     likes: r.likes || 0,
                     articleContent: r.article_content,
                     tags: r.tags || [],
-                    affiliateLink: r.affiliate_link
+                    affiliateLink: r.affiliate_link,
+                    reviewerEmail: r.reviewer_email,
+                    pros: r.pros || [],
+                    cons: r.cons || [],
+                    verdict: r.verdict,
+                    userRatingAvg: Number(r.user_rating_avg) || 0,
+                    userRatingCount: r.user_rating_count || 0,
+                    gearItems: r.gear_items || [],
+                    isTrending: r.is_trending || false
                 }));
                 setReviews(mappedReviews);
             }
@@ -235,7 +252,7 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
             category: r.category,
             thumbnail: r.thumbnail,
             rating: r.rating,
-            views: r.views,
+            views: Number(r.views) || 0,
             duration: r.duration,
             reviewer: r.reviewer,
             publishDate: r.publish_date,
@@ -246,8 +263,21 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
             likes: r.likes || 0,
             articleContent: r.article_content,
             affiliateLink: r.affiliate_link,
-            tags: r.tags || []
+            tags: r.tags || [],
+            pros: r.pros || [],
+            cons: r.cons || [],
+            verdict: r.verdict,
+            userRatingAvg: r.user_rating_avg || 0,
+            userRatingCount: r.user_rating_count || 0,
+            gearItems: r.gear_items || [],
+            isTrending: r.is_trending || false
         }));
+    };
+
+    const logAffiliateClick = async (reviewId: string, itemName: string, destinationUrl: string) => {
+        await supabase
+            .from('affiliate_clicks')
+            .insert([{ review_id: reviewId, item_name: itemName, destination_url: destinationUrl }]);
     };
 
     // Engagement Features
@@ -298,6 +328,27 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
         if (error) throw error;
     };
 
+    const rateReview = async (id: string, rating: number) => {
+        const current = reviews.find(r => r.id === id);
+        if (!current) return;
+
+        const oldCount = current.userRatingCount || 0;
+        const oldAvg = current.userRatingAvg || 0;
+        const newCount = oldCount + 1;
+        const newAvg = (oldAvg * oldCount + rating) / newCount;
+
+        // Optimistic update
+        setReviews(prev => prev.map(r => r.id === id ? { ...r, userRatingAvg: newAvg, userRatingCount: newCount } : r));
+
+        await supabase
+            .from('reviews')
+            .update({
+                user_rating_avg: newAvg,
+                user_rating_count: newCount
+            })
+            .eq('id', id);
+    };
+
     const subscribeNewsletter = async (email: string) => {
         const { error } = await supabase
             .from('newsletter_subscribers')
@@ -321,6 +372,8 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
             getComments,
             addComment,
             deleteComment,
+            rateReview,
+            logAffiliateClick,
             subscribeNewsletter
         }}>
             {children}
